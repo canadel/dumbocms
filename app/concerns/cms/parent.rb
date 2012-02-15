@@ -12,10 +12,10 @@ module Cms
           belongs_to kolumn, options
         end
         
-        # validates kolumn, :associated => true
+        # validates kolumn, associated: true
         # validates kolumn_id,
-        #   :presence => true,
-        #   :numericality => { :greater_than => 0 }
+        #   presence: true,
+        #   numericality: { greater_than: 0 }
       end
     end
   end

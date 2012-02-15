@@ -16,7 +16,6 @@ RailsAdmin.config do |config|
     Page,
     BulkImport,
     Category,
-    Resource,
     Plan,
     Company
   ]
@@ -389,22 +388,6 @@ RailsAdmin.config do |config|
       field(:account) { show }
       field(:record) { show }
       field(:csv) { show }
-    end
-  end
-
-  config.model(Resource) do
-    list do
-      field(:company) { show }
-      field(:name) { show }
-      field(:slug) { show }
-    end
-    
-    [:show, :create, :update, :edit].each do |view|
-      send(view) do
-        field(:company) { show }
-        field(:name) { show }
-        field(:resource) { show }
-      end
     end
   end
 end

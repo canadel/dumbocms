@@ -1,10 +1,12 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require File.expand_path('../../test_helper', __FILE__)
 
 class PageTest < ActiveSupport::TestCase
   def setup
-    @domain = FactoryGirl.create(:domain)
+    @domain = create(:domain)
     @page = @domain.page
   end
+  
+  should validate_presence_of(:template_id)
   
   test("setup") do
     assert(@domain.valid?, 'Domain should be valid.')
@@ -12,12 +14,12 @@ class PageTest < ActiveSupport::TestCase
     assert_not_nil(@page.preferred_domain, 'Preferred domain should be set.')
   end
   
-  test("should create") { FactoryGirl.create(:page) }
+  test("should create") { create(:page) }
   test("to_s") { assert_equal @page.name, @page.to_s }
   test("names") { assert_equal [].push(@domain.name), @page.domains.names }
 
   # Ensure that pages without domains are hidden.
-  test("hidden?") { assert FactoryGirl.create(:page).hidden? }
+  test("hidden?") { assert create(:page).hidden? }
   test("not hidden?") { assert ! @page.hidden? }
   
   test("environment production") do
@@ -36,7 +38,7 @@ class PageTest < ActiveSupport::TestCase
   
   # Ensure no preferred domain if none linked.
   test("preferred_domain nil") do
-    assert FactoryGirl.create(:page).preferred_domain.nil?
+    assert create(:page).preferred_domain.nil?
   end
   
   # Ensure preffered domain is first added, if none explicitly marked.
@@ -46,7 +48,7 @@ class PageTest < ActiveSupport::TestCase
   
   # Ensure preferred_domain can be explicitly marked.
   test("preferred_domain") do
-    @page.domain = FactoryGirl.create(:domain, { :page => @page })
+    @page.domain = create(:domain, { :page => @page })
 
     assert_equal @page.domain, @page.preferred_domain
   end
@@ -54,38 +56,38 @@ class PageTest < ActiveSupport::TestCase
 
   # Ensure that external_id is set.
   test("set external_id") do
-    account = FactoryGirl.create(:account)
-    pages = FactoryGirl.create_list(:page, 3, { :account => account })
+    account = create(:account)
+    pages = create_list(:page, 3, { :account => account })
 
     assert_equal [1, 2, 3], pages.map(&:external_id)
   end
   
   # Ensure that each account maintains external_id on its own.
   test("set external_id per account") do
-    pages = FactoryGirl.create_list(:page, 3)
+    pages = create_list(:page, 3)
 
     assert_equal [1, 1, 1], pages.map(&:external_id)
   end
   
   # Ensure that external_id always incremented, even if some destroyed.
   test("increment external_id") do
-    account = FactoryGirl.create(:account)
-    pages = FactoryGirl.create_list(:page, 3, { :account => account })
+    account = create(:account)
+    pages = create_list(:page, 3, { :account => account })
     account.pages.destroy_all
-    pages = FactoryGirl.create_list(:page, 3, { :account => account })
+    pages = create_list(:page, 3, { :account => account })
     
     assert_equal [4, 5, 6], pages.map(&:external_id)
   end
   
   test("initialize permalinks") do
-    assert ! FactoryGirl.build(:page).permalinks.blank?
+    assert ! build(:page).permalinks.blank?
   end
   test("create permalinks") do
-    assert ! FactoryGirl.create(:page).permalinks.blank?
+    assert ! create(:page).permalinks.blank?
   end
   
   test("set_advanced") do
-    page = FactoryGirl.create(:page)
+    page = create(:page)
     
     assert page.sitemap?
     assert page.atom?
@@ -93,15 +95,15 @@ class PageTest < ActiveSupport::TestCase
     assert page.georss?
   end
   test("set_robots_txt") do
-    page = FactoryGirl.create(:page)
+    page = create(:page)
     
     assert_equal "User-Agent: *\r\nDisallow: /admin/\r\n", page.robots_txt
   end
   
   test("set_domain_page_id") do
     # Set the fixtures.
-    domain = FactoryGirl.create(:domain)
-    page = FactoryGirl.create(:page)
+    domain = create(:domain)
+    page = create(:page)
     
     # Check the fixtures.
     assert_not_equal page, domain.page
@@ -115,15 +117,15 @@ class PageTest < ActiveSupport::TestCase
   end
   
   test("frontpage stub") do
-    pg = FactoryGirl.create(:page)
+    pg = create(:page)
     pg.documents.destroy_all # TODO required?
     assert_equal 'frontpage', pg.frontpage.slug
     assert_equal '', pg.frontpage.content.to_s
     assert_equal pg.url.to_s, pg.frontpage.url
   end
   test('frontpage') do
-    pg = FactoryGirl.create(:page)
-    fpg = FactoryGirl.create(:document, :page => pg, :slug => 'frontpage')
+    pg = create(:page)
+    fpg = create(:document, :page => pg, :slug => 'frontpage')
     assert_equal 'frontpage', pg.frontpage.slug
     assert_equal fpg.content, pg.frontpage.content
     assert_equal pg.url.to_s, pg.frontpage.url
@@ -131,7 +133,7 @@ class PageTest < ActiveSupport::TestCase
   end
   
   test('json') do
-    pg = FactoryGirl.create(:page)
+    pg = create(:page)
     columns = [
       'account_id', 'name', 'title', 'template_id', 'description',
       'indexable'

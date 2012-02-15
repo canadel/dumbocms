@@ -3,14 +3,14 @@ class Category < ActiveRecord::Base
 
   define_parent :page
   define_propagate :permalinks, :documents, :permalink!
-  define_external_id :on => :page
+  define_external_id on: :page
   define_liquid_attributes %w{
     external_id name slug position parent documents categories
-  }, { :categories => :subcategories }
+  }, { categories: :subcategories }
   define_matching %w{name slug external_id}
   define_nested
   define_name :name
-  define_slug :scope => :page, :from => :name
+  define_slug scope: :page, from: :name
   define_import %w{name slug page_id permalinks parent_id}
   define_default :position, 100
   
@@ -39,7 +39,7 @@ class Category < ActiveRecord::Base
   #++
   def as_json(options = {})
     super((options || {}).merge({
-      :only => [
+      only: [
         'name',
         'slug',
         'page_id'

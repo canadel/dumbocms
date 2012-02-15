@@ -1,12 +1,12 @@
 class BulkImport < ActiveRecord::Base
   include Cms::Base
 
-  define_cattr :fastercsv_options, {
-    :headers => true,
-    :return_headers => false,
-    :skip_blanks => true,
-    :header_converters => :symbol,
-    :converters => [:integer, :date, :string]
+  define_cattr :csv_options, {
+    headers: true,
+    return_headers: false,
+    skip_blanks: true,
+    header_converters: :symbol,
+    converters: [ :integer, :date, :string ]
   }
   define_parent :account
   define_default %w{domain_ids page_ids}, []
@@ -23,7 +23,7 @@ class BulkImport < ActiveRecord::Base
   class << self
     # Process all imports in the queue.
     def process!
-      uploaded.find_each(:batch_size => 5) do |import|
+      uploaded.find_each(batch_size: 5) do |import|
         import.transaction do
           import.lock!
           next if import.processing?
@@ -39,9 +39,9 @@ class BulkImport < ActiveRecord::Base
   end
 
   def process!
-    skope = (record == 'domain') ? {} : { :account_id => self.account_id } # FIXME
+    skope = (record == 'domain') ? {} : { account_id: self.account_id } # FIXME
     
-    FasterCSV.open(self.csv.path, 'r', fastercsv_options) do |csv|
+    CSV.open(self.csv.path, 'r', csv_options) do |csv|
       csv.each do |row|
         attrs = row.inject({}) do |ret, e|
           col, v = record_column(e.first), e.last
@@ -56,7 +56,7 @@ class BulkImport < ActiveRecord::Base
       end
     end
     
-    save(:validate => false)
+    save(validate: false)
     true
   end
   

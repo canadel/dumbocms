@@ -1,9 +1,9 @@
-require File.dirname(__FILE__) + '/../../test_helper'
+require File.expand_path('../../../test_helper', __FILE__)
 require 'time'
 
 class Liquid::PageTest < ActiveSupport::TestCase
   def setup
-    @page = FactoryGirl.create(:page, {
+    @page = create(:page, {
       :permalinks => '/%slug%',
       :name => "Page name",
       :description => "Page description",
@@ -12,13 +12,13 @@ class Liquid::PageTest < ActiveSupport::TestCase
       :longitude => -73.998672,
     })
     
-    @domain = FactoryGirl.create(:domain, {
+    @domain = create(:domain, {
       :page => @page,
       :name => 'domain.de'
     })
     
     3.times do |n|
-      @page.documents << FactoryGirl.create(:document, {
+      @page.documents << create(:document, {
         :page => @page,
         :title => "Example document #{n+1}",
         :slug => "example-document-#{n+1}",
@@ -26,7 +26,7 @@ class Liquid::PageTest < ActiveSupport::TestCase
       })
     end
 
-    @page.documents << FactoryGirl.create(:document, {
+    @page.documents << create(:document, {
       :page => @page,
       :title => "Frontpage title",
       :slug => 'frontpage',
@@ -34,14 +34,14 @@ class Liquid::PageTest < ActiveSupport::TestCase
     })
     
     3.times do |n|
-      @page.categories << FactoryGirl.create(:category, {
+      @page.categories << create(:category, {
         :name => "Kategory #{n+1}",
         :page => @page
       })
     end
     
     3.times do |n|
-      @page.resources << FactoryGirl.create(:resource, {
+      @page.resources << create(:resource, {
         :name => "resource#{n+1}.jpg",
         :slug => "resource#{n+1}-jpg",
         :company => @page.company
@@ -50,7 +50,7 @@ class Liquid::PageTest < ActiveSupport::TestCase
     
     @document = @page.documents.first
     @document.update_attributes({
-      :template => FactoryGirl.create(:template, :account => @page.account)
+      :template => create(:template, :account => @page.account)
     })
     
     @page.save!

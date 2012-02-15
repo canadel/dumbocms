@@ -1,8 +1,8 @@
-require 'test_helper'
+require File.expand_path('../../test_helper', __FILE__)
 
 class DocumentGeoTest < ActiveSupport::TestCase
   def setup
-    @stub = FactoryGirl.build(:document)
+    @stub = build(:document)
   end
   
   test("setup") do

@@ -3,7 +3,7 @@ class Snippet < ActiveRecord::Base
   
   define_parent :page
   define_liquid_attributes %w{slug content}
-  define_slug :scope => :page
+  define_slug scope: :page
   define_name :slug
   
   default_scope alphabetically()

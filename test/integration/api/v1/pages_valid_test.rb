@@ -1,11 +1,11 @@
-require File.dirname(__FILE__) + '/../../../test_helper'
+require File.expand_path('../../../../test_helper', __FILE__)
 
 class Api::V1::PagesValidTest < ActionDispatch::IntegrationTest
 
   def setup
-    @page = FactoryGirl.create(:page)
+    @page = create(:page)
     @account = @page.account
-    @template = FactoryGirl.create(:template, :account => @account)
+    @template = create(:template, :account => @account)
   end
   test('setup') do
     assert @account.api_key.present?
@@ -35,7 +35,7 @@ class Api::V1::PagesValidTest < ActionDispatch::IntegrationTest
     post '/api/v1/pages.json', {
       'page' => {
         'account_id' => @account.id,
-        'name' => 'Maurycy',
+        'name' => 'Dumbo',
         'title' => 'Hello, world!',
         'template_id' => @template.id,
         'description' => 'This is a nice page!',
@@ -50,7 +50,7 @@ class Api::V1::PagesValidTest < ActionDispatch::IntegrationTest
     # Ensure correct page.
     page = @account.pages.first
     
-    assert_equal 'Maurycy', page.name
+    assert_equal 'Dumbo', page.name
     assert_equal 'Hello, world!', page.title
     assert_equal @template, page.template
     assert_equal 'This is a nice page!', page.description

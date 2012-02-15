@@ -1,20 +1,20 @@
-require File.dirname(__FILE__) + '/../../test_helper'
+require File.expand_path('../../../test_helper', __FILE__)
 require 'time'
 
 class Liquid::DomainTest < ActiveSupport::TestCase
   def setup
-    @page = FactoryGirl.create(:page, {
+    @page = create(:page, {
       :permalinks => '/%slug%'
     })
     
-    @domain = FactoryGirl.create(:domain, {
+    @domain = create(:domain, {
       :page => @page,
       :name => 'domain.de'
     })
     
-    @document = FactoryGirl.create(:document, {
+    @document = create(:document, {
       :page => @page.reload,
-      :template => FactoryGirl.create(:template)
+      :template => create(:template)
     })
     
     @document.save!

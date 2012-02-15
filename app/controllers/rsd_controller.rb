@@ -8,9 +8,9 @@ class RsdController < ApplicationController
   def index #:nodoc:
     
     if @page
-      render :layout => false
+      render(layout: false)
     else
-      render(:text => 'Not Found', :status => :not_found)
+      render(text: 'Not Found', status: :not_found) # FIXME
     end
   end
 end

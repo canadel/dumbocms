@@ -3,8 +3,8 @@ development:
   encoding: utf8
   collation: utf8_general_ci
   host: 127.0.0.1
-  username: root
-  password: 
+  username: dumbodev
+  password: dumbodevlovesentropybits
   database: dumbocms_development
   reconnect: true
 
@@ -16,8 +16,8 @@ test:
   encoding: utf8
   collation: utf8_general_ci
   host: 127.0.0.1
-  username: dumbocms
-  password: byniggyim8 # FIXME
+  username: dumbotest
+  password: dumbotestlovesentropybits
   database: dumbocms_test
   reconnect: true
 
@@ -26,7 +26,7 @@ production:
   encoding: utf8
   collation: utf8_general_ci
   host: 127.0.0.1
-  username: dumbocms
-  password: byniggyim8 # FIXME
+  username: dumboprod
+  password: dumboprodlovesentropybits
   database: dumbocms_production
   reconnect: true

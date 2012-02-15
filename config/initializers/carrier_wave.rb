@@ -1,4 +1,4 @@
-CarrierWave::SanitizedFile.sanitize_regexp = /[^a-zA-Zа-яА-ЯёЁ0-9\.\-\+_]/u
+CarrierWave::SanitizedFile.sanitize_regexp = /[^a-zA-Z0-9\.\-\+_]/u
 
 api_key = Rails.configuration.dumbocms.rackspace_cloud_api_key
 username = Rails.configuration.dumbocms.rackspace_cloud_username

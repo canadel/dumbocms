@@ -1,9 +1,9 @@
-require 'test_helper'
+require File.expand_path('../../test_helper', __FILE__)
 
 class HttpHeadersTest < ActionDispatch::IntegrationTest
 
   test("development noindex") do
-    dom = FactoryGirl.create(:domain, :name => 'a.pl')
+    dom = create(:domain, :name => 'a.pl')
     
     host!(Rails.configuration.dumbocms.hostname)
     get "/a.pl/"
@@ -13,7 +13,7 @@ class HttpHeadersTest < ActionDispatch::IntegrationTest
   end
   
   test("production index") do
-    dom = FactoryGirl.create(:domain, :name => 'a.pl')
+    dom = create(:domain, :name => 'a.pl')
     
     host!('a.pl')
     get "/"
@@ -23,7 +23,7 @@ class HttpHeadersTest < ActionDispatch::IntegrationTest
   end
   
   test("production noindex") do
-    dom = FactoryGirl.create(:domain, :name => 'a.pl')
+    dom = create(:domain, :name => 'a.pl')
     dom.page.update_attribute(:indexable, false)
     dom.page.reload
     assert dom.page.noindex?

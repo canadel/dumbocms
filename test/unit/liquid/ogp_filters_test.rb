@@ -1,20 +1,20 @@
-require File.dirname(__FILE__) + '/../../test_helper'
+require File.expand_path('../../../test_helper', __FILE__)
 
 class Liquid::OgpFiltersTest < ActiveSupport::TestCase
   def setup
-    @doc = FactoryGirl.create(:document)
+    @doc = create(:document)
     @pg = @doc.page
     @pg.update_attribute(:ogp, true)
-    @dom = FactoryGirl.create(:domain, :page => @pg)
+    @dom = create(:domain, :page => @pg)
     @tmpl = @doc.document_template
     
-    @document = FactoryGirl.create(:document, {
+    @document = create(:document, {
       :title => 'document title',
       :kind => 'product',
       :page => @pg,
       :latitude => 52.229676,
       :longitude => 21.012229,
-      :template => FactoryGirl.create(:template)
+      :template => create(:template)
     })
   end
   test("setup") do

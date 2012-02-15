@@ -18,9 +18,9 @@ dumbocms:
   noc_subject_prefix: '[DumboCMS] '
   noc_sender_name: 'Dumbo'
   noc_sender_address: 'noreply+developers@dumbocms.com'
-  noc_recipients: "maurycypw@gmail.com"
+  noc_recipients: "maciej@taranienko.pl"
   templates_path: '/home/dumbocms/ftp/templates/'
   ftp_templates_path: '/home/dumbocms/ftp/templates/'
   ftp:
-    uid: 1001 # dumbocms on uppereast
-    gid: 1001 # dumbocms on uppereast
+    uid: 1009 # dumbocms on uppereast
+    gid: 1010 # dumbocms on uppereast

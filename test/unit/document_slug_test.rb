@@ -1,9 +1,9 @@
-require 'test_helper'
+require File.expand_path('../../test_helper', __FILE__)
 
 class DocumentSlugTest < ActiveSupport::TestCase
   def setup
-    @stub = Factory.build(:document)
-    @document = FactoryGirl.create(:document)
+    @stub = build(:document)
+    @document = create(:document)
   end
 
   test("setup") do
@@ -15,7 +15,7 @@ class DocumentSlugTest < ActiveSupport::TestCase
   end
   
   test("title") do
-    doc = FactoryGirl.create(:document, {
+    doc = create(:document, {
       :title => 'Lunch is for wimps',
       :slug => nil
     })
@@ -24,9 +24,9 @@ class DocumentSlugTest < ActiveSupport::TestCase
     assert_equal 'lunch-is-for-wimps', doc.slug
   end
   test("unique") do
-    pg = FactoryGirl.create(:page)
+    pg = create(:page)
     
-    first, last = FactoryGirl.create_list(:document, 2, {
+    first, last = create_list(:document, 2, {
       :title => 'Lunch is for wimps',
       :slug => nil,
       :page => pg
@@ -39,7 +39,7 @@ class DocumentSlugTest < ActiveSupport::TestCase
     assert_equal 'lunch-is-for-wimps-2', last.slug
   end
   test("unique scope page") do
-    first, last = FactoryGirl.create_list(:document, 2, {
+    first, last = create_list(:document, 2, {
       :title => 'Lunch is for wimps',
       :slug => nil
     })
@@ -52,7 +52,7 @@ class DocumentSlugTest < ActiveSupport::TestCase
   end
   
   test("explicite") do
-    doc = FactoryGirl.create(:document, :slug => 'just-a-slug')
+    doc = create(:document, :slug => 'just-a-slug')
     
     assert_equal 'just-a-slug', doc.slug
   end

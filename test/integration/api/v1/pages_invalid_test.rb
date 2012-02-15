@@ -1,9 +1,9 @@
-require File.dirname(__FILE__) + '/../../../test_helper'
+require File.expand_path('../../../../test_helper', __FILE__)
 
 class Api::V1::PagesInvalidTest < ActionDispatch::IntegrationTest
 
   def setup
-    @account = FactoryGirl.create(:account)
+    @account = create(:account)
   end
 
   test('setup') do

@@ -1,8 +1,8 @@
-require 'test_helper'
+require File.expand_path('../../test_helper', __FILE__)
 
 class CategoryImportTest < ActiveSupport::TestCase
   def setup
-    @page = FactoryGirl.create(:page)
+    @page = create(:page)
   end
 
   test("import create") do
@@ -21,7 +21,7 @@ class CategoryImportTest < ActiveSupport::TestCase
     assert_equal @page.id, imported.page_id
   end
   test("import update") do
-    category = FactoryGirl.create(:category, :slug => 'catwalk')
+    category = create(:category, :slug => 'catwalk')
     
     q = {
       :slug => 'catwalk',

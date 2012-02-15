@@ -1,9 +1,9 @@
-require 'test_helper'
+require File.expand_path('../../test_helper', __FILE__)
 
 class DocumentCategoriesRenderTest < ActiveSupport::TestCase
   def setup
-    @category = FactoryGirl.create(:category)
-    @stub = FactoryGirl.build(:category)
+    @category = create(:category)
+    @stub = build(:category)
   end
 
   test("categories for name") do
@@ -15,9 +15,9 @@ class DocumentCategoriesRenderTest < ActiveSupport::TestCase
 EOF
     template_content = template_content.strip # FIXME: required?
     
-    template = FactoryGirl.create(:template, :content => template_content)
-    document = FactoryGirl.create(:document, {
-      :categories => FactoryGirl.create_list(:category, 3),
+    template = create(:template, :content => template_content)
+    document = create(:document, {
+      :categories => create_list(:category, 3),
       :template => template
     })
     
@@ -39,9 +39,9 @@ EOF
     template_content = '{{ document.categories.first.slug }}'
     template_content = template_content.strip # FIXME: required?
     
-    template = FactoryGirl.create(:template, :content => template_content)
-    document = FactoryGirl.create(:document, {
-      :categories => [FactoryGirl.create(:category, :slug => 'catwalk')],
+    template = create(:template, :content => template_content)
+    document = create(:document, {
+      :categories => [create(:category, :slug => 'catwalk')],
       :template => template
     })
     
@@ -60,10 +60,10 @@ EOF
     template_content = '{{ document.category.slug }}'
     template_content = template_content.strip # FIXME: required?
     
-    category = FactoryGirl.create(:category, :slug => 'catwalk')
+    category = create(:category, :slug => 'catwalk')
     
-    template = FactoryGirl.create(:template, :content => template_content)
-    document = FactoryGirl.create(:document, {
+    template = create(:template, :content => template_content)
+    document = create(:document, {
       :category => category,
       :template => template
     })

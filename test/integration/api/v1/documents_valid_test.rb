@@ -1,9 +1,9 @@
-require File.dirname(__FILE__) + '/../../../test_helper'
+require File.expand_path('../../../../test_helper', __FILE__)
 
 class Api::V1::DocumentsValidTest < ActionDispatch::IntegrationTest
 
   def setup
-    @document = FactoryGirl.create(:document)
+    @document = create(:document)
     @page = @document.page
     @account = @page.account
   end

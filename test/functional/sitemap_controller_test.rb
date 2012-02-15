@@ -1,11 +1,11 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require File.expand_path('../../test_helper', __FILE__)
 
 class SitemapControllerTest < ActionController::TestCase
   
   def setup
-    @page = FactoryGirl.create(:page)
-    @domain = FactoryGirl.create(:domain, { :page => @page })
-    @document = FactoryGirl.create(:document, { :page => @page })
+    @page = create(:page)
+    @domain = create(:domain, { :page => @page })
+    @document = create(:document, { :page => @page })
   end
   
   test("index") do

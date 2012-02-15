@@ -19,28 +19,28 @@ class Document < ActiveRecord::Base # :nodoc:
   define_cattr :hidden_slugs, [ not_found_slug ]
   define_parent :page
   define_default :kind, 'article'
-  define_default :published_at, lambda { Time.now }
-  define_default :language, lambda { self.page.try(:default_language) } # FIXME
-  define_external_id :on => :page
+  define_default :published_at, -> { Time.now }
+  define_default :language, -> { self.page.try(:default_language) } # FIXME
+  define_external_id on: :page
   define_selector :kind, [ custom_ogp_types, ogp_types ].flatten.freeze
-  define_slug :scope => :page, :from => :title
+  define_slug scope: :page, from: :title
   define_name :title
   define_liquid_attributes %w{
     external_id slug title content_html description url language published_at
     primary_category categories latitude longitude kind
-  }, { :content_html => :content, :primary_category => :category }
+  }, { content_html: :content, primary_category: :category }
   define_belongs_to %w{category permalink template}
-  define_belongs_to %w{author}, :class_name => 'Account'
+  define_belongs_to %w{author}, class_name: 'Account'
   define_has_many %w{permalinks}
   define_enum :markup, ['', 'markdown', 'textile', 'sanitize'].freeze
   define_cattr :default_markup, ''
   define_default :markup, ''
   define_timezone :timezone
-  define_default :timezone, lambda { self.page.try(:timezone) || 'Europe/Berlin' }
+  define_default :timezone, -> { self.page.try(:timezone) || 'Europe/Berlin' }
   
   has_and_belongs_to_many :categories
   
-  validates :template, :associated => true
+  validates :template, associated: true
 
   scope :assigned, where("slug NOT IN (?)", custom_slugs) # FIXME: ugly
   default_scope alphabetically()
@@ -76,8 +76,8 @@ class Document < ActiveRecord::Base # :nodoc:
     true
   end
   
-  delegate :hidden?, :to => :page
-  delegate :path, :to => :canonical_permalink, :allow_nil => true
+  delegate :hidden?, to: :page
+  delegate :path, to: :canonical_permalink, allow_nil: true
   
   class << self
     # Return the frontpage document.
@@ -101,18 +101,18 @@ class Document < ActiveRecord::Base # :nodoc:
       page = attributes[:page] # FIXME: do not set, require the required
 
       Document.new(attributes.reverse_merge({
-        :slug => '',
-        :content => '',
-        :content_html => '',
-        :language => page.try(:default_language), # FIXME !!!
-        :title => '',
-        :description => '',
-        :created_at => Time.now, # XXX correct?
-        :updated_at => Time.now, # XXX correct?
-        :category => nil,
-        :categories => [],
-        :published_at => 4.seconds.ago,
-        :page => page
+        slug: '',
+        content: '',
+        content_html: '',
+        language: page.try(:default_language), # FIXME
+        title: '',
+        description: '',
+        created_at: Time.now, # XXX
+        updated_at: Time.now, # XXX
+        category: nil,
+        categories: [],
+        published_at: 4.seconds.ago,
+        page: page
       }))
     end
   end
@@ -176,7 +176,7 @@ class Document < ActiveRecord::Base # :nodoc:
     if frontpage?
       permalink = Permalink.frontpage_path
       permalink.gsub!(/\/+/, '/')
-      permalinks.create!(:path => permalink)
+      permalinks.create!(path: permalink)
     elsif not_found?
       nil
     elsif ! published?
@@ -193,7 +193,7 @@ class Document < ActiveRecord::Base # :nodoc:
       #     app/models/document.rb:156:in `permalink!'
       #     app/models/document.rb:51:in `_callback_after_395'
       #++
-      permalinks.create!(:path => permalink)
+      permalinks.create!(path: permalink)
     end
 
     true
@@ -208,7 +208,7 @@ class Document < ActiveRecord::Base # :nodoc:
       cp.path = URI.parse(q).path
     end
     
-    save(:validate => false)
+    save(validate: false)
     true
   end
   
@@ -217,7 +217,7 @@ class Document < ActiveRecord::Base # :nodoc:
   def render(params={}) # FIXME: rescue
     ([]).tap do |rt|
       tp = document_template.content
-      ev = Liquid::Template.parse(tp).render(self.assigns, { :registers => self.registers })
+      ev = Liquid::Template.parse(tp).render(self.assigns, { registers: self.registers })
       rw = page.account.rewriters.any? ? page.account.rewriters.rewrite!(ev) : ev
 
       rt << rw
@@ -237,7 +237,7 @@ class Document < ActiveRecord::Base # :nodoc:
   
   def as_json(options = {})
     super((options || {}).merge({
-      :only => [
+      only: [
         'title',
         'content',
         'page_id',
@@ -254,9 +254,12 @@ class Document < ActiveRecord::Base # :nodoc:
   end  
   
   alias_method :canonical?, :canonical_permalink?
-  alias_method :publish?, :published?
-  alias_method :publish=, :published=
   alias_method :render_fresh, :render
+
+  if table_exists?
+    alias_method :publish?, :published?
+    alias_method :publish=, :published=
+  end
 
   protected
     # Return the registers assigned to a Liquid template.

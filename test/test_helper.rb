@@ -1,13 +1,16 @@
 ENV["RAILS_ENV"] = "test"
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
+
 require 'facets/string'
 
 class ActiveSupport::TestCase
   
+  include Factory::Syntax::Methods
+  
   protected
     def assert_liquid(name, document=nil)
-      document ||= FactoryGirl.create(:document)
+      document ||= create(:document)
     
       assets_path = File.expand_path('../assets/', __FILE__)
       

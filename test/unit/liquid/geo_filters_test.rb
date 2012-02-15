@@ -1,8 +1,8 @@
-require File.dirname(__FILE__) + '/../../test_helper'
+require File.expand_path('../../../test_helper', __FILE__)
 
 class Liquid::GeoFiltersTest < ActiveSupport::TestCase
   def setup
-    @doc = FactoryGirl.create(:document)
+    @doc = create(:document)
     @tmpl = @doc.document_template
   end
   

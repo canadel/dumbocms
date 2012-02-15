@@ -1,4 +1,4 @@
-require 'test_helper'
+require File.expand_path('../../test_helper', __FILE__)
 
 class DocumentUrlTest < ActiveSupport::TestCase
   def setup
@@ -8,12 +8,12 @@ class DocumentUrlTest < ActiveSupport::TestCase
   test("url production") do
     Rails.configuration.dumbocms.production = true
     
-    doc = FactoryGirl.create(:document)
+    doc = create(:document)
     
     page = doc.page
     page.update_attribute(:permalinks, '/%id%')
     
-    domain = FactoryGirl.create(:domain, :page => page)
+    domain = create(:domain, :page => page)
     domain.update_attribute(:name, 'bilety.net.pl')
 
     doc.permalink! # FIXME
@@ -24,12 +24,12 @@ class DocumentUrlTest < ActiveSupport::TestCase
   test("url development") do
     Rails.configuration.dumbocms.production = false
     
-    doc = FactoryGirl.create(:document)
+    doc = create(:document)
     
     page = doc.page
     page.update_attribute(:permalinks, '/%id%')
     
-    domain = FactoryGirl.create(:domain, :page => page)
+    domain = create(:domain, :page => page)
     domain.update_attribute(:name, 'bilety.net.pl')
 
     doc.permalink! # FIXME
@@ -40,11 +40,11 @@ class DocumentUrlTest < ActiveSupport::TestCase
   test("url frontpage production") do
     Rails.configuration.dumbocms.production = true
     
-    doc = FactoryGirl.create(:document, :slug => 'frontpage')
+    doc = create(:document, :slug => 'frontpage')
     
     page = doc.page
     
-    domain = FactoryGirl.create(:domain, :page => page)
+    domain = create(:domain, :page => page)
     domain.update_attribute(:name, 'bilety.net.pl')
     
     assert_equal 'http://bilety.net.pl/', doc.url
@@ -53,11 +53,11 @@ class DocumentUrlTest < ActiveSupport::TestCase
   test("url frontpage development") do
     Rails.configuration.dumbocms.production = false
     
-    doc = FactoryGirl.create(:document, :slug => 'frontpage')
+    doc = create(:document, :slug => 'frontpage')
     
     page = doc.page
     
-    domain = FactoryGirl.create(:domain, :page => page)
+    domain = create(:domain, :page => page)
     domain.update_attribute(:name, 'bilety.net.pl')
     
     assert_equal 'http://dumbocms.com/bilety.net.pl/', doc.url

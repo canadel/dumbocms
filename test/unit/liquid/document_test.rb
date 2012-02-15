@@ -1,14 +1,14 @@
-require File.dirname(__FILE__) + '/../../test_helper'
+require File.expand_path('../../../test_helper', __FILE__)
 require 'time'
 
 class Liquid::DocumentTest < ActiveSupport::TestCase
   def setup
-    @page = FactoryGirl.create(:page, {
+    @page = create(:page, {
       :permalinks => '/%slug%'
     })
     
-    @document = FactoryGirl.create(:document, {
-      :template => FactoryGirl.create(:template),
+    @document = create(:document, {
+      :template => create(:template),
       :content => 'hello, world',
       :slug => 'hello-world-hey',
       :latitude => 40.714728,
@@ -21,28 +21,28 @@ class Liquid::DocumentTest < ActiveSupport::TestCase
       :page => @page
     })
     
-    @domain = FactoryGirl.create(:domain, {
+    @domain = create(:domain, {
       :page => @page,
       :name => 'domain.de'
     })
     
-    @category = FactoryGirl.create(:category, {
+    @category = create(:category, {
       :name => 'primary category',
       :position => 100,
       :page => @page
     })
     
-    @document.categories << FactoryGirl.create(:category, {
+    @document.categories << create(:category, {
       :name => 'runway',
       :position => 5,
       :page => @page
     })
-    @document.categories << FactoryGirl.create(:category, {
+    @document.categories << create(:category, {
       :name => 'backstage',
       :position => 10,
       :page => @page
     })
-    @document.categories << FactoryGirl.create(:category, {
+    @document.categories << create(:category, {
       :name => 'backstreet',
       :position => 10,
       :page => @page

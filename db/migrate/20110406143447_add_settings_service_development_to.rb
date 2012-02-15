@@ -2,7 +2,7 @@ class AddSettingsServiceDevelopmentTo < ActiveRecord::Migration
   def self.up
     Setting.create({
       :key    => "service.email_form.development_to",
-      :value  => "maurycy@gds.pl"
+      :value  => "dumbocms@dumbocms.com"
     })
   end
 

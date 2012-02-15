@@ -4,7 +4,7 @@ class Rewriter < ActiveRecord::Base
   define_parent :account
   define_default :position, 100
 
-  validates :pattern, :presence => true
+  validates :pattern, presence: true
   
   default_scope ordered()
   

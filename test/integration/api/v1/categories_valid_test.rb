@@ -1,13 +1,13 @@
-require File.dirname(__FILE__) + '/../../../test_helper'
+require File.expand_path('../../../../test_helper', __FILE__)
 
 class Api::V1::CategoriesValidTest < ActionDispatch::IntegrationTest
   
   def setup
-    @account = FactoryGirl.create(:account)
-    @page = FactoryGirl.create(:page, {
+    @account = create(:account)
+    @page = create(:page, {
       :account => @account
     })
-    @category = FactoryGirl.create(:category, {
+    @category = create(:category, {
       :page => @page
     })
   end

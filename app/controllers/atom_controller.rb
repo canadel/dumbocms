@@ -10,7 +10,7 @@ class AtomController < ApplicationController
     @documents = @page.documents
 
     respond_to do |format|
-      format.atom { render :layout => false }
+      format.atom { render layout: false }
     end
   end
 end

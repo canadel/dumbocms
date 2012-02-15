@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require File.expand_path('../../test_helper', __FILE__)
 
 class BulkImportDomainTest < ActiveSupport::TestCase
   
@@ -7,9 +7,9 @@ class BulkImportDomainTest < ActiveSupport::TestCase
     @opts = { :headers => @headers, :write_headers => true }
     @path = File.dirname(__FILE__) + '/../tmp/bulk_import_domain.csv'
     
-    FasterCSV.open(@path, "w", @opts) {|csv| true } # FIXME hack
+    CSV.open(@path, "w", @opts) {|csv| true } # FIXME hack
 
-    @page = FactoryGirl.create(:page)
+    @page = create(:page)
     @account = @page.account
         
     @import_attributes = {
@@ -26,13 +26,13 @@ class BulkImportDomainTest < ActiveSupport::TestCase
   # test("setup") { assert ! File.exists?(@path) }
   
   test("create") do
-    FasterCSV.open(@path, "w", @opts) do |csv|
+    CSV.open(@path, "w", @opts) do |csv|
       10.times do |n|
         csv << [@page.id, "#{n}.crap.pl"]
       end # FIXME seq
     end
     
-    @import = FactoryGirl.create(:bulk_import, @import_attributes)
+    @import = create(:bulk_import, @import_attributes)
     assert_difference('Domain.count', 10) { BulkImport.process! }
     
     @import.reload
@@ -41,11 +41,11 @@ class BulkImportDomainTest < ActiveSupport::TestCase
     assert_equal 10, @page.domains.size
   end
   test("create erroneous") do
-    FasterCSV.open(@path, "w", @opts) do |csv|
+    CSV.open(@path, "w", @opts) do |csv|
       10.times { csv << ['foo', "#{rand(666)}.crap.pl"] }
     end
     
-    @import = FactoryGirl.create(:bulk_import, @import_attributes)
+    @import = create(:bulk_import, @import_attributes)
     assert_difference('Domain.count', 0) { BulkImport.process! }
     
     @import.reload
@@ -54,12 +54,12 @@ class BulkImportDomainTest < ActiveSupport::TestCase
     assert_equal 0, @page.domains.size
   end
   test("create some erroneous") do
-    FasterCSV.open(@path, "w", @opts) do |csv|
+    CSV.open(@path, "w", @opts) do |csv|
       5.times { csv << [@page.id, "#{rand(666)}.crap.pl"] }
       5.times { csv << ['foo', "#{rand(666)}.crap.pl"] }
     end
     
-    @import = FactoryGirl.create(:bulk_import, @import_attributes)
+    @import = create(:bulk_import, @import_attributes)
     assert_difference('Domain.count', 5) { BulkImport.process! }
 
     @import.reload
@@ -69,14 +69,14 @@ class BulkImportDomainTest < ActiveSupport::TestCase
   end
   
   test("update") do
-    domains = FactoryGirl.create_list(:domain, 10, { :page => @page })
-    new_page = FactoryGirl.create(:page, { :account => @account })
+    domains = create_list(:domain, 10, { :page => @page })
+    new_page = create(:page, { :account => @account })
 
-    FasterCSV.open(@path, "w", @opts) do |csv|
+    CSV.open(@path, "w", @opts) do |csv|
       domains.each {|domain| csv << [new_page.id, domain.name]}
     end
     
-    @import = FactoryGirl.create(:bulk_import, @import_attributes)
+    @import = create(:bulk_import, @import_attributes)
     assert_difference('Domain.count', 0) { BulkImport.process! }
 
     @import.reload
@@ -87,13 +87,13 @@ class BulkImportDomainTest < ActiveSupport::TestCase
     assert_equal 10, new_page.domains.size
   end
   test("update erroneous") do
-    domains = FactoryGirl.create_list(:domain, 10, { :page => @page })
+    domains = create_list(:domain, 10, { :page => @page })
 
-    FasterCSV.open(@path, "w", @opts) do |csv|
+    CSV.open(@path, "w", @opts) do |csv|
       domains.each {|domain| csv << ['foo', domain.name]}
     end
     
-    @import = FactoryGirl.create(:bulk_import, @import_attributes)
+    @import = create(:bulk_import, @import_attributes)
     assert_difference('Domain.count', 0) { BulkImport.process! }
 
     @import.reload
@@ -102,16 +102,16 @@ class BulkImportDomainTest < ActiveSupport::TestCase
     assert_equal 10, @page.domains.size
   end
   test("update some erroneous") do
-    domains = FactoryGirl.create_list(:domain, 10, { :page => @page })
-    new_page = FactoryGirl.create(:page, { :account => @account })
+    domains = create_list(:domain, 10, { :page => @page })
+    new_page = create(:page, { :account => @account })
 
-    FasterCSV.open(@path, "w", @opts) do |csv|
+    CSV.open(@path, "w", @opts) do |csv|
       domains.each_with_index do |domain, n|
         csv << [(n.odd? ? new_page.id : 'foo'), domain.name]
       end
     end
     
-    @import = FactoryGirl.create(:bulk_import, @import_attributes)
+    @import = create(:bulk_import, @import_attributes)
     assert_difference('Domain.count', 0) { BulkImport.process! }
 
     @import.reload
@@ -123,15 +123,15 @@ class BulkImportDomainTest < ActiveSupport::TestCase
   end
   
   test("create update") do
-    domains = FactoryGirl.create_list(:domain, 5, { :page => @page })
-    new_page = FactoryGirl.create(:page, { :account => @account })
+    domains = create_list(:domain, 5, { :page => @page })
+    new_page = create(:page, { :account => @account })
 
-    FasterCSV.open(@path, "w", @opts) do |csv|
+    CSV.open(@path, "w", @opts) do |csv|
       domains.each {|domain| csv << [new_page.id, domain.name]}
       5.times {|n| csv << [@page.id, "#{n}.fiut.pl"]}
     end
     
-    @import = FactoryGirl.create(:bulk_import, @import_attributes)
+    @import = create(:bulk_import, @import_attributes)
     assert_difference('Domain.count', 5) { BulkImport.process! }
 
     @import.reload

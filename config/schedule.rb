@@ -19,4 +19,6 @@
 
 # Learn more: http://github.com/javan/whenever
 
-every(90.seconds) { rake 'cron' }
+env :PATH, "$PATH:/usr/bin:/usr/local/bin"
+every(300.seconds) { rake 'cron' }
+

@@ -1,8 +1,8 @@
-require 'test_helper'
+require File.expand_path('../../test_helper', __FILE__)
 
 class ResourceTest < ActiveSupport::TestCase
   def setup
-    @resource = FactoryGirl.create(:resource)
+    @resource = create(:resource)
   end
   test('setup') do
     assert   @resource.valid?

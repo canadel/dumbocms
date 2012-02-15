@@ -130,9 +130,6 @@ class ApplicationController < ActionController::Base
 
     # Render the login message, and return the 403 HTTP Status.
     def bye(status=:forbidden)
-      render({
-        :text => login_message,
-        :status => status
-      })
+      render(text: login_message, status: status)
     end
 end

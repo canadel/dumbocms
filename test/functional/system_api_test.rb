@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require File.expand_path('../../test_helper', __FILE__)
 require 'action_web_service/test_invoke'
 
 class SystemApiTest < ActionController::TestCase
@@ -7,13 +7,13 @@ class SystemApiTest < ActionController::TestCase
   def setup
     @controller = BackendController.new
     
-    @account = FactoryGirl.create(:account, {
+    @account = create(:account, {
       :email => 'u',
       :password => 'p',
       :password_confirmation => 'p'
     })
-    @domain = FactoryGirl.create(:domain)
-    @page = FactoryGirl.create(:page, {
+    @domain = create(:domain)
+    @page = create(:page, {
       :account => @account,
       :domain => @domain
     })

@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require File.expand_path('../../test_helper', __FILE__)
 require 'action_web_service/test_invoke'
 
 class MetaWeblogApiTest < ActionController::TestCase
@@ -7,13 +7,13 @@ class MetaWeblogApiTest < ActionController::TestCase
   def setup
     @controller = BackendController.new
     
-    @account = FactoryGirl.create(:account, {
+    @account = create(:account, {
       :email => 'u',
       :password => 'p',
       :password_confirmation => 'p'
     })
-    @domain = FactoryGirl.create(:domain)
-    @page = FactoryGirl.create(:page, {
+    @domain = create(:domain)
+    @page = create(:page, {
       :account => @account,
       :domain => @domain
     })
@@ -23,7 +23,7 @@ class MetaWeblogApiTest < ActionController::TestCase
   end
   
   test("getCategories") do
-    category = FactoryGirl.create(:category, :page => @page)
+    category = create(:category, :page => @page)
     args = [@page.id, 'u', 'p']
     ret = invoke_layered :metaWeblog, :getCategories, *args
     assert ret.is_a?(Array)
@@ -36,7 +36,7 @@ class MetaWeblogApiTest < ActionController::TestCase
     assert ret.empty?
   end
   test("getPost") do
-    doc = FactoryGirl.create(:document, :page => @page)
+    doc = create(:document, :page => @page)
     args = [doc.external_id, 'u', 'p']
     ret = invoke_layered :metaWeblog, :getPost, *args
     assert_equal doc.title, ret['title']
@@ -49,8 +49,8 @@ class MetaWeblogApiTest < ActionController::TestCase
     # assert_equal doc.published_at.to_time, ret['dateCreated'].to_time
   end
   test("getPost category") do
-    cat = FactoryGirl.create(:category, :name => 'poo', :page => @page)
-    doc = FactoryGirl.create(:document, :page => @page, :category => cat)
+    cat = create(:category, :name => 'poo', :page => @page)
+    doc = create(:document, :page => @page, :category => cat)
     args = [doc.external_id, 'u', 'p']
     ret = invoke_layered :metaWeblog, :getPost, *args
     assert_equal doc.title, ret['title']
@@ -63,8 +63,8 @@ class MetaWeblogApiTest < ActionController::TestCase
     # assert_equal doc.published_at.to_time, ret['dateCreated'].to_time
   end
   test("getPost categories") do
-    cats = FactoryGirl.create_list(:category, 3, :page => @page)
-    doc = FactoryGirl.create(:document, :page => @page)
+    cats = create_list(:category, 3, :page => @page)
+    doc = create(:document, :page => @page)
     doc.categories = cats
     # TODO: ensure that the primary category is returned first
     expected_categories = [cats.map(&:name)].sort(&:name).flatten
@@ -87,7 +87,7 @@ class MetaWeblogApiTest < ActionController::TestCase
     assert_equal nil.to_s, ret['permaLink'] # TODO nil vs nil.to_s
   end
   test("getRecentPosts") do
-    docs = FactoryGirl.create_list(:document, 7, :page => @page)
+    docs = create_list(:document, 7, :page => @page)
     expected = @page.reload.documents.latest.limit(5).map(&:title)
     args = [@page.id, 'u', 'p', 5]
     ret = invoke_layered :metaWeblog, :getRecentPosts, *args
@@ -126,7 +126,7 @@ class MetaWeblogApiTest < ActionController::TestCase
     assert_equal '', ret
   end
   test("newPost categories") do
-    cats = FactoryGirl.create_list(:category, 3, :page => @page)
+    cats = create_list(:category, 3, :page => @page)
     expected_categories = cats.map(&:name)
     struct = MetaWeblogStructs::Article.new.tap do |s|
       s.description = 'alo'
@@ -144,7 +144,7 @@ class MetaWeblogApiTest < ActionController::TestCase
     assert_equal expected_categories, doc.categories.names
   end
   test("newPost draft") do
-    cats = FactoryGirl.create_list(:category, 3, :page => @page)
+    cats = create_list(:category, 3, :page => @page)
     expected_categories = cats.map(&:name)
     struct = MetaWeblogStructs::Article.new.tap do |s|
       s.description = 'alo'
@@ -164,7 +164,7 @@ class MetaWeblogApiTest < ActionController::TestCase
     assert_equal nil, doc.published_at
   end
   test("deletePost") do
-    doc = FactoryGirl.create(:document, :page => @page)
+    doc = create(:document, :page => @page)
     args = ['foo', doc.external_id, 'u', 'p', true]
     ret = invoke_layered :metaWeblog, :deletePost, *args
     assert_equal true, ret
@@ -176,7 +176,7 @@ class MetaWeblogApiTest < ActionController::TestCase
     assert_equal false, ret
   end
   test("editPost") do
-    doc = FactoryGirl.create(:document, :page => @page)
+    doc = create(:document, :page => @page)
     struct = MetaWeblogStructs::Article.new.tap do |s|
       s.description = 'alo'
       s.title = 'foo'
@@ -198,7 +198,7 @@ class MetaWeblogApiTest < ActionController::TestCase
     assert_equal([], doc.categories.names)
   end
   test("editPost link") do
-    doc = FactoryGirl.create(:document, :page => @page)
+    doc = create(:document, :page => @page)
     struct = MetaWeblogStructs::Article.new.tap do |s|
       s.description = 'alo'
       s.title = 'foo'
@@ -222,7 +222,7 @@ class MetaWeblogApiTest < ActionController::TestCase
     assert_equal([], doc.categories.names)
   end
   test("editPost link relative") do
-    doc = FactoryGirl.create(:document, :page => @page)
+    doc = create(:document, :page => @page)
     struct = MetaWeblogStructs::Article.new.tap do |s|
       s.description = 'alo'
       s.title = 'foo'
@@ -246,7 +246,7 @@ class MetaWeblogApiTest < ActionController::TestCase
     assert_equal([], doc.categories.names)
   end
   test("editPost link url") do
-    doc = FactoryGirl.create(:document, :page => @page)
+    doc = create(:document, :page => @page)
     struct = MetaWeblogStructs::Article.new.tap do |s|
       s.description = 'alo'
       s.title = 'foo'
@@ -270,8 +270,8 @@ class MetaWeblogApiTest < ActionController::TestCase
     assert_equal([], doc.categories.names)
   end
   test("editPost categories") do
-    categories = FactoryGirl.create_list(:category, 3, :page => @page)
-    doc = FactoryGirl.create(:document, :page => @page)
+    categories = create_list(:category, 3, :page => @page)
+    doc = create(:document, :page => @page)
     expected_categories = categories.map(&:name)
     
     struct = MetaWeblogStructs::Article.new.tap do |s|

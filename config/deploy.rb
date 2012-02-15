@@ -1,41 +1,28 @@
-set :rails_env, "production"
-
-set :verbose, true
-
 set :application, "dumbocms"
-set :domain, "108.166.65.97"
+set :domain,      "uppereast.dumbocms.com:9922"
 
-set :user, "dumbocms"
-set :password, "JoktefOc:"
+set :user,        "#{application}"
 
-set :scm, "git"
-set :scm_verbose, true
-set :repository, "git@github.com:maurycy/dumbocms.git"
+set :repository,  "git@github.com:canadel/#{application}.git"
+set :scm,         :git
 
-set :branch, "origin/master"
+set :deploy_to,   "/home/#{application}/production"
 
-set :deploy_to, "/home/dumbocms/apps/#{rails_env}"
-set :deploy_via, :remote_cache
-set :keep_releases, 5
-set :use_sudo, false
+set :use_sudo,    false
+set :rake,        "bundle exec rake"
 
-role :app, domain
-role :web, domain
-role :db,  domain, :primary => true
+role :web,        "#{domain}"
+role :app,        "#{domain}"
+role :db,         "#{domain}", :primary => true
 
-set :rake, 'rake --trace'
+ssh_options[:forward_agent] = true
 
-after "deploy:symlink", "deploy:update_crontab"
+set :rails_env,   :production
 
-namespace :deploy do
-  desc "Restart Application"
-  task :restart, :roles => :app do
-    run "touch #{current_path}/tmp/restart.txt"
-  end
-  
-  desc "Update the crontab file"
-  task :update_crontab, :roles => :db do
-    run "cd #{release_path} && whenever --update-crontab #{application}"
-  end
-end
+set :whenever_command, "bundle exec whenever"
+require "whenever/capistrano"
 
+after "unicorn:reload", "whenever:update_crontab"
+
+set :unicorn_bin, "/usr/local/bin/unicorn_rails"
+require 'capistrano-unicorn'

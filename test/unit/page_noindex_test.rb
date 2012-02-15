@@ -1,9 +1,9 @@
-require 'test_helper'
+require File.expand_path('../../test_helper', __FILE__)
 
 class PageNoindexTest < ActiveSupport::TestCase
   def setup
-    @pg = FactoryGirl.create(:page)
-    @stub = FactoryGirl.build(:page)
+    @pg = create(:page)
+    @stub = build(:page)
   end
   
   test("initialize") do

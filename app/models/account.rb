@@ -6,22 +6,22 @@ class Account < ActiveRecord::Base
 
   include Cms::Base
 
-  define_value :api_key, lambda { ActiveSupport::SecureRandom.hex(16) }
-  define_value :synced_templates_at, lambda { Time.now }
+  define_value :api_key, -> { SecureRandom.hex(16) }
+  define_value :synced_templates_at, -> { Time.now }
   define_default :role, 'owner'
   define_value :role, 'owner'
   define_enum :role, %w{owner} # TODO: writer designer}
-  define_name :email, :uniqueness => true
-  define_has_many %w{pages rewriters templates}, :dependent => :destroy
-  define_has_many %w{documents}, :through => :pages
+  define_name :email, uniqueness: true
+  define_has_many %w{pages rewriters templates}, dependent: :destroy
+  define_has_many %w{documents}, through: :pages
   define_parent :company
   define_timezone :timezone
-  define_default :timezone, lambda { self.company.try(:timezone) || 'Europe/Berlin' }
+  define_default :timezone, -> { self.company.try(:timezone) || 'Europe/Berlin' }
   define_default :super_user, false
   
-  has_paper_trail :ignore => :synced_templates_at
+  has_paper_trail ignore: :synced_templates_at
 
-  validates :company, :associated => true, :presence => true
+  validates :company, associated: true, presence: true
 
   default_scope alphabetically()
   
@@ -81,8 +81,12 @@ class Account < ActiveRecord::Base
     return nil if self.id.blank?
     
     "#{Account.templates_path}./#{self.id}".tap do |path| # TODO strp
+
       # Create the directory if does not exist.
-      Dir.mkdir(path) unless File.exists?(path)
+      # FIXME HARDCODED assets and templates locations, matt@prayam.com
+      [path, [path, '/assets'].join, [path, '/templates'].join].each do |localPath|
+        Dir.mkdir(localPath) unless File.exists?(localPath)
+      end
       
       # Return the path. # TODO remove
       path
@@ -116,7 +120,7 @@ class Account < ActiveRecord::Base
             
             # Haiku
             template = self.templates.find_by_name(name)
-            template ||= self.templates.build(:name => name)
+            template ||= self.templates.build(name: name)
             template.name = name
             template.content = content
             template.save

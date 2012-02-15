@@ -1,8 +1,8 @@
-require 'test_helper'
+require File.expand_path('../../test_helper', __FILE__)
 
 class DomainImportTest < ActiveSupport::TestCase
   def setup
-    @domain = FactoryGirl.create(:domain)
+    @domain = create(:domain)
     @page = @domain.page
   end
 
@@ -19,7 +19,7 @@ class DomainImportTest < ActiveSupport::TestCase
     assert_equal(imported, Domain.find_by_name('goof'), 'Should create.')
   end
   test("update") do
-    pg, name = FactoryGirl.create(:page), @domain.name
+    pg, name = create(:page), @domain.name
     attrs = { :name => @domain.name, :page_id => pg.id }
     
     imported = Domain.import!(attrs)

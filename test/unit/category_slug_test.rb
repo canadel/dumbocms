@@ -1,9 +1,9 @@
-require 'test_helper'
+require File.expand_path('../../test_helper', __FILE__)
 
 class CategorySlugTest < ActiveSupport::TestCase
   def setup
-    @stub = Factory.build(:category)
-    @category = FactoryGirl.create(:category)
+    @stub = build(:category)
+    @category = create(:category)
   end
 
   test("setup") do
@@ -15,7 +15,7 @@ class CategorySlugTest < ActiveSupport::TestCase
   end
   
   test("name") do
-    cat = FactoryGirl.create(:category, {
+    cat = create(:category, {
       :name => 'Lunch is for wimps',
       :slug => nil
     })
@@ -24,9 +24,9 @@ class CategorySlugTest < ActiveSupport::TestCase
     assert_equal 'lunch-is-for-wimps', cat.slug
   end
   test("unique") do
-    pg = FactoryGirl.create(:page)
+    pg = create(:page)
     
-    first, last = FactoryGirl.create_list(:category, 2, {
+    first, last = create_list(:category, 2, {
       :name => 'Lunch is for wimps',
       :slug => nil,
       :page => pg
@@ -39,7 +39,7 @@ class CategorySlugTest < ActiveSupport::TestCase
     assert_equal 'lunch-is-for-wimps-2', last.slug
   end
   test("unique scope page") do
-    first, last = FactoryGirl.create_list(:category, 2, {
+    first, last = create_list(:category, 2, {
       :name => 'Lunch is for wimps',
       :slug => nil
     })
@@ -52,7 +52,7 @@ class CategorySlugTest < ActiveSupport::TestCase
   end
   
   test("explicite") do
-    cat = FactoryGirl.create(:category, :slug => 'just-a-slug')
+    cat = create(:category, :slug => 'just-a-slug')
     
     assert_equal 'just-a-slug', cat.slug
   end

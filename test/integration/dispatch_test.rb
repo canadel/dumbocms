@@ -1,4 +1,4 @@
-require 'test_helper'
+require File.expand_path('../../test_helper', __FILE__)
 
 class DispatchTest < ActionDispatch::IntegrationTest
 
@@ -8,7 +8,7 @@ class DispatchTest < ActionDispatch::IntegrationTest
     Rails.configuration.dumbocms.production = true
     
     # Set up fixtures.
-    domain = FactoryGirl.create(:domain)
+    domain = create(:domain)
     domain.update_attribute(:name, 'tanieloty.pl')
     
     page = domain.page
@@ -17,7 +17,7 @@ class DispatchTest < ActionDispatch::IntegrationTest
     template = page.template
     template.update_attribute(:content, '{{ document.id }}')
     
-    document = FactoryGirl.create(:document, {
+    document = create(:document, {
       :page => page,
       :slug => 'frontpage'
     })
@@ -46,7 +46,7 @@ class DispatchTest < ActionDispatch::IntegrationTest
     Rails.configuration.dumbocms.production = true
     
     # Set up fixtures.
-    domain = FactoryGirl.create(:domain)
+    domain = create(:domain)
     domain.update_attribute(:name, 'tanieloty.pl')
     
     page = domain.page
@@ -55,7 +55,7 @@ class DispatchTest < ActionDispatch::IntegrationTest
     template = page.template
     template.update_attribute(:content, '{{ document.id }}')
     
-    document = FactoryGirl.create(:document, {
+    document = create(:document, {
       :page => page
     })
     
@@ -83,7 +83,7 @@ class DispatchTest < ActionDispatch::IntegrationTest
     Rails.configuration.dumbocms.production = true
     
     # Set up fixtures.
-    domain = FactoryGirl.create(:domain)
+    domain = create(:domain)
     domain.update_attribute(:name, 'tanieloty.pl')
     
     page = domain.page
@@ -92,11 +92,11 @@ class DispatchTest < ActionDispatch::IntegrationTest
     document_template = page.template
     document_template.update_attribute(:content, '{{ document.id }}')
     
-    template = FactoryGirl.create(:template, {
+    template = create(:template, {
       :content => '{{ document.content }}'
     })
     
-    document = FactoryGirl.create(:document, {
+    document = create(:document, {
       :page => page,
       :content => 'hello, world',
       :template => template
@@ -126,12 +126,12 @@ class DispatchTest < ActionDispatch::IntegrationTest
     Rails.configuration.dumbocms.production = true
     
     # Set up fixtures.
-    page = FactoryGirl.create(:page)
+    page = create(:page)
     
-    domain = FactoryGirl.create(:domain, { :page => page,
+    domain = create(:domain, { :page => page,
       :name => 'tanieloty.pl',
     })
-    another_domain = FactoryGirl.create(:domain, { :page => page,
+    another_domain = create(:domain, { :page => page,
       :name => 'www.tanieloty.pl'
     })
 
@@ -141,7 +141,7 @@ class DispatchTest < ActionDispatch::IntegrationTest
     template = page.template
     template.update_attribute(:content, '{{ document.id }}')
     
-    document = FactoryGirl.create(:document, {
+    document = create(:document, {
       :page => page
     })
     
@@ -174,23 +174,23 @@ class DispatchTest < ActionDispatch::IntegrationTest
     Rails.configuration.dumbocms.production = true
     
     # Set up fixtures.
-    page = FactoryGirl.create(:page)
+    page = create(:page)
     
-    domain = FactoryGirl.create(:domain, { :page => page,
+    domain = create(:domain, { :page => page,
       :name => 'tanieloty.pl',
     })
-    another_domain = FactoryGirl.create(:domain, { :page => page,
+    another_domain = create(:domain, { :page => page,
       :name => 'www.tanieloty.pl'
     })
 
     page.reload # TODO required?
     page.update_attribute(:domain, domain)
     
-    template = FactoryGirl.create(:template, {
+    template = create(:template, {
       :content => '{{ document.content }}'
     })
     
-    document = FactoryGirl.create(:document, {
+    document = create(:document, {
       :page => page,
       :content => 'y',
       :template => template
@@ -225,23 +225,23 @@ class DispatchTest < ActionDispatch::IntegrationTest
     Rails.configuration.dumbocms.production = true
     
     # Set up fixtures.
-    page = FactoryGirl.create(:page)
+    page = create(:page)
     
-    domain = FactoryGirl.create(:domain, { :page => page,
+    domain = create(:domain, { :page => page,
       :name => 'tanieloty.pl',
     })
-    another_domain = FactoryGirl.create(:domain, { :page => page,
+    another_domain = create(:domain, { :page => page,
       :name => 'www.tanieloty.pl'
     })
 
     page.reload # TODO required?
     page.update_attribute(:domain, domain)
     
-    template = FactoryGirl.create(:template, {
+    template = create(:template, {
       :content => '{{ document.content }}'
     })
     
-    document = FactoryGirl.create(:document, {
+    document = create(:document, {
       :page => page,
       :content => 'y',
       :template => template,
@@ -277,23 +277,23 @@ class DispatchTest < ActionDispatch::IntegrationTest
     Rails.configuration.dumbocms.production = false
     
     # Set up fixtures.
-    page = FactoryGirl.create(:page)
+    page = create(:page)
     
-    domain = FactoryGirl.create(:domain, { :page => page,
+    domain = create(:domain, { :page => page,
       :name => 'tanieloty.pl',
     })
-    another_domain = FactoryGirl.create(:domain, { :page => page,
+    another_domain = create(:domain, { :page => page,
       :name => 'www.tanieloty.pl'
     })
 
     page.reload # TODO required?
     page.update_attribute(:domain, domain)
     
-    template = FactoryGirl.create(:template, {
+    template = create(:template, {
       :content => '{{ document.content }}'
     })
     
-    document = FactoryGirl.create(:document, {
+    document = create(:document, {
       :page => page,
       :content => 'y',
       :template => template,
@@ -329,23 +329,23 @@ class DispatchTest < ActionDispatch::IntegrationTest
     Rails.configuration.dumbocms.production = false
     
     # Set up fixtures.
-    page = FactoryGirl.create(:page)
+    page = create(:page)
     
-    domain = FactoryGirl.create(:domain, { :page => page,
+    domain = create(:domain, { :page => page,
       :name => 'tanieloty.pl',
     })
-    another_domain = FactoryGirl.create(:domain, { :page => page,
+    another_domain = create(:domain, { :page => page,
       :name => 'www.tanieloty.pl'
     })
 
     page.reload # TODO required?
     page.update_attribute(:domain, domain)
     
-    template = FactoryGirl.create(:template, {
+    template = create(:template, {
       :content => '{{ document.content }}'
     })
     
-    document = FactoryGirl.create(:document, {
+    document = create(:document, {
       :page => page,
       :content => 'y',
       :template => template,
@@ -380,13 +380,13 @@ class DispatchTest < ActionDispatch::IntegrationTest
     Rails.configuration.dumbocms.production = true
     
     # Set up fixtures.
-    page = FactoryGirl.create(:page)
+    page = create(:page)
 
-    domain = FactoryGirl.create(:domain, { :page => page,
+    domain = create(:domain, { :page => page,
       :name => 'tanieloty.pl',
     })
 
-    template = FactoryGirl.create(:template, {
+    template = create(:template, {
       :content => 'hey, {{ document.content }}'
     })
     
@@ -413,7 +413,7 @@ class DispatchTest < ActionDispatch::IntegrationTest
   end
   
   test('stub frontpage on root URL on production') do
-    dom = FactoryGirl.create(:domain, :name => 'a.pl')
+    dom = create(:domain, :name => 'a.pl')
     pg = dom.page
     pg.template.update_attribute(:content, '{{ document.content }}')
     assert pg.documents.empty?
@@ -424,11 +424,11 @@ class DispatchTest < ActionDispatch::IntegrationTest
     assert_equal '', @response.body
   end
   test('stub frontpage on custom URLs on production') do
-    dom = FactoryGirl.create(:domain, :name => 'a.pl')
+    dom = create(:domain, :name => 'a.pl')
     pg = dom.page
     pg.template.update_attribute(:content, '{{ document.content }}')
     assert pg.documents.empty?
-    doc = FactoryGirl.create(:document, {
+    doc = create(:document, {
       :page => pg,
       :content => 'miau',
       :slug => 'test'
@@ -442,7 +442,7 @@ class DispatchTest < ActionDispatch::IntegrationTest
     assert_equal 'miau', @response.body
   end
   test('stub frontpage on root URL on development') do
-    dom = FactoryGirl.create(:domain, :name => 'a.pl')
+    dom = create(:domain, :name => 'a.pl')
     pg = dom.page
     pg.template.update_attribute(:content, '{{ document.content }}')
     assert pg.documents.empty?
@@ -453,11 +453,11 @@ class DispatchTest < ActionDispatch::IntegrationTest
     assert_equal '', @response.body
   end
   test('stub frontpage on custom URLs on development') do
-    dom = FactoryGirl.create(:domain, :name => 'a.pl')
+    dom = create(:domain, :name => 'a.pl')
     pg = dom.page
     pg.template.update_attribute(:content, '{{ document.content }}')
     assert pg.documents.empty?
-    doc = FactoryGirl.create(:document, {
+    doc = create(:document, {
       :page => pg,
       :content => 'miau',
       :slug => 'test'
@@ -471,11 +471,11 @@ class DispatchTest < ActionDispatch::IntegrationTest
     assert_equal 'miau', @response.body
   end
   test('stub frontpage on custom URLs if no documents on production') do
-    dom = FactoryGirl.create(:domain, :name => 'a.pl')
+    dom = create(:domain, :name => 'a.pl')
     pg = dom.page
     pg.template.update_attribute(:content, '{{ page.frontpage.url }}') # FIXME style
     assert pg.documents.empty?
-    doc = FactoryGirl.create(:document, {
+    doc = create(:document, {
       :page => pg,
       :content => 'miau',
       :slug => 'test'
@@ -489,11 +489,11 @@ class DispatchTest < ActionDispatch::IntegrationTest
     assert_equal pg.url, @response.body
   end
   test('stub frontpage on custom URLs if no documents on development') do
-    dom = FactoryGirl.create(:domain, :name => 'a.pl')
+    dom = create(:domain, :name => 'a.pl')
     pg = dom.page
     pg.template.update_attribute(:content, '{{ page.frontpage.url }}') # FIXME style
     assert pg.documents.empty?
-    doc = FactoryGirl.create(:document, {
+    doc = create(:document, {
       :page => pg,
       :content => 'miau',
       :slug => 'test'

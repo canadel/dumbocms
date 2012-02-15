@@ -13,7 +13,7 @@ module Cms
         
         define_cattr kolumn_list, keys
         define_cattr kolumn_enum, keys # FIXME Hash.zip(keys, values)
-        validates kolumn, options.merge(:inclusion => { :in => keys })
+        validates kolumn, options.merge(inclusion: { in: keys })
 
         keys.each do |key|
           kolumn_boolean = [ key, '_', kolumn, '?' ].join.to_sym

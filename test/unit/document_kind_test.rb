@@ -1,15 +1,15 @@
-require 'test_helper'
+require File.expand_path('../../test_helper', __FILE__)
 
 class DocumentKindTest < ActiveSupport::TestCase
   def setup
-    @stub = FactoryGirl.build(:document)
+    @stub = build(:document)
   end
   
   test('setup') do
     assert ! @stub.kind.blank?
   end
   test('create') do
-    assert FactoryGirl.create(:document).valid?
+    assert create(:document).valid?
   end
   test('default_kind') do
     # As per http://developers.facebook.com/docs/opengraph/#types it should

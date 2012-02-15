@@ -1,11 +1,11 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require File.expand_path('../../test_helper', __FILE__)
 
 class DocumentTest < ActiveSupport::TestCase
   def setup
-    @document = Factory.build(:document)
+    @document = build(:document)
   end
   
-  test("should create") { Factory.create(:document) }
+  test("should create") { create(:document) }
   
   test("to_s title") do
     @document.slug, @document.title = 'slug', 'title'
@@ -14,7 +14,7 @@ class DocumentTest < ActiveSupport::TestCase
 
   test("stub") { Document.stub }
   test("stub default_language") do
-    page = FactoryGirl.build(:page)
+    page = build(:page)
     page.default_language = 'fr'
     
     stub = Document.stub(:page => page, :language => page.default_language)
@@ -32,7 +32,7 @@ class DocumentTest < ActiveSupport::TestCase
   # test "should not return hidden"
   
   test('json') do
-    doc = FactoryGirl.create(:document)
+    doc = create(:document)
     columns = %w{
       title content page_id slug language published_at template_id
       description kind markup timezone

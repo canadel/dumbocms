@@ -36,9 +36,9 @@ require 'cms/value'
 # polak do
 #   selekt :role, %w{admin customer partner}
 #   defolt :role, 'customer'
-#   defolt :api_key, lambda { ActiveSupport::SecureRandom.hex(16) }
-#   defolt :synced_templates_at, lambda { Time.now }
-#   nejm :email, :uniqueness => true
+#   defolt :api_key, -> { SecureRandom.hex(16) }
+#   defolt :synced_templates_at, -> { Time.now }
+#   nejm :email, uniqueness: true
 # end
 #++
 module Cms

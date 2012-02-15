@@ -16,9 +16,9 @@ class SitemapController < ApplicationController
   
   def index #:nodoc:
     if @page.nil? || !@page.sitemap?
-      render(:text => 'Not Found', :status => :not_found)
+      render(text: 'Not Found', status: :not_found)
     else
-      render(:layout => false)
+      render(layout: false)
     end
   end
 end

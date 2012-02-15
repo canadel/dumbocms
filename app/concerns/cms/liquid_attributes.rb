@@ -7,7 +7,7 @@ module Cms #:nodoc:
     module ClassMethods
       
       def define_liquid_attributes(kolumns, renames={})
-        default_renames = { :external_id => :id }
+        default_renames = { external_id: :id }
 
         unless kolumns.is_a?(Array)
           raise(ArgumentError, 'kolumns is not array')

@@ -1,4 +1,4 @@
-require 'test_helper'
+require File.expand_path('../../test_helper', __FILE__)
 
 class ErrorsTest < ActionDispatch::IntegrationTest
 
@@ -15,10 +15,10 @@ class ErrorsTest < ActionDispatch::IntegrationTest
   test("unknown path custom not_found") do
     Rails.configuration.dumbocms.production = true
     
-    domain = FactoryGirl.create(:domain)
+    domain = create(:domain)
 
     page = domain.page
-    page.documents = FactoryGirl.create_list(:document, 1, {
+    page.documents = create_list(:document, 1, {
       :slug => Document.not_found_slug,
       :content => 'Custom Not Found',
       :page => page
@@ -39,11 +39,11 @@ class ErrorsTest < ActionDispatch::IntegrationTest
   test("unknown path production") do
     Rails.configuration.dumbocms.production = true
     
-    domain = FactoryGirl.create(:domain)
+    domain = create(:domain)
     
     page = domain.page
     
-    document = FactoryGirl.create(:document, :page => page)
+    document = create(:document, :page => page)
     
     assert(domain.preferred?)
 
@@ -61,9 +61,9 @@ class ErrorsTest < ActionDispatch::IntegrationTest
     Rails.configuration.dumbocms.production = false
     
     # Set the fixtures.
-    domain = FactoryGirl.create(:domain)
+    domain = create(:domain)
     page = domain.page
-    document = FactoryGirl.create(:document, :page => page)
+    document = create(:document, :page => page)
     
     # Assert the fixtures.
     assert(domain.preferred?, "Domain should be preferred.")

@@ -1,11 +1,11 @@
-require File.dirname(__FILE__) + '/../../test_helper'
+require File.expand_path('../../../test_helper', __FILE__)
 
 class Liquid::ResourceFiltersTest < ActiveSupport::TestCase
   def setup
-    @document = FactoryGirl.create(:document, {
-      :template => FactoryGirl.create(:template)
+    @document = create(:document, {
+      :template => create(:template)
     })
-    @resource = FactoryGirl.create(:resource, {
+    @resource = create(:resource, {
       :company => @document.page.account.company
     })
   end

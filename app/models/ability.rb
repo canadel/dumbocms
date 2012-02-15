@@ -18,18 +18,16 @@ class Ability
         account_ids = account.company.account_ids
         page_ids = account.company.page_ids
         
-        can :manage, Account,
-          :company => { :id => company_ids },
-          :super_user => false
+        can :manage, Account, company: { id: company_ids }, super_user: false
         
         per_account = [ Page, Template, BulkImport ]
         per_account.each do |klass|
-          can :manage, klass, :account => { :id => account_ids }
+          can :manage, klass, account: { id: account_ids}
         end
         
         per_page = [ Document, Domain, Category, Resource ]
         per_page.each do |klass|
-          can :manage, klass, :page => { :id => page_ids }
+          can :manage, klass, page: { id: page_ids }
         end
       when 'designer'
         # TODO

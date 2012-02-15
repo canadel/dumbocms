@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require File.expand_path('../../test_helper', __FILE__)
 
 class BulkImportPageTest < ActiveSupport::TestCase
   
@@ -7,9 +7,9 @@ class BulkImportPageTest < ActiveSupport::TestCase
     @opts = { :headers => @headers, :write_headers => true }
     @path = File.dirname(__FILE__) + '/../tmp/bulk_import_page.csv'
     
-    FasterCSV.open(@path, "w", @opts) {|csv| true } # FIXME hack
+    CSV.open(@path, "w", @opts) {|csv| true } # FIXME hack
 
-    @domain = FactoryGirl.create(:domain)
+    @domain = create(:domain)
     @page = @domain.page
     @account = @page.account
         
@@ -29,7 +29,7 @@ class BulkImportPageTest < ActiveSupport::TestCase
   test("create") do
     domain_names = []
     
-    FasterCSV.open(@path, "w", @opts) do |csv|
+    CSV.open(@path, "w", @opts) do |csv|
       10.times do |n|
         name = "'#{n}.crap.pl'\""
         domain_names << name
@@ -37,7 +37,7 @@ class BulkImportPageTest < ActiveSupport::TestCase
       end # FIXME seq
     end
     
-    @import = FactoryGirl.create(:bulk_import, @import_attributes)
+    @import = create(:bulk_import, @import_attributes)
     assert_difference('Page.count', 10) do
       assert_difference('Domain.count', 10) do
         BulkImport.process!
@@ -49,13 +49,13 @@ class BulkImportPageTest < ActiveSupport::TestCase
     assert_equal 'success', @import.state
   end
   test("create erroneous") do
-    FasterCSV.open(@path, "w", @opts) do |csv|
+    CSV.open(@path, "w", @opts) do |csv|
       10.times do |n|
         csv << ["#{n}.crap.pl", "#{n}.crap.pl", 'foo']
       end
     end
     
-    @import = FactoryGirl.create(:bulk_import, @import_attributes)
+    @import = create(:bulk_import, @import_attributes)
     assert_difference('Page.count', 0) { BulkImport.process! }
     
     @import.reload
@@ -63,12 +63,12 @@ class BulkImportPageTest < ActiveSupport::TestCase
     assert_equal 'failure', @import.state
   end
   test("create some erroneous") do
-    FasterCSV.open(@path, "w", @opts) do |csv|
+    CSV.open(@path, "w", @opts) do |csv|
       5.times {|n| csv << ["#{n}.crap.pl", "#{n}.crap.pl", @page.template_id] }
       5.times {|n| csv << ["#{n}.crap.pl", "#{n}.crap.pl", 'foo'] }
     end
     
-    @import = FactoryGirl.create(:bulk_import, @import_attributes)
+    @import = create(:bulk_import, @import_attributes)
     assert_difference('Domain.count', 5) { BulkImport.process! }
 
     @import.reload
@@ -77,28 +77,28 @@ class BulkImportPageTest < ActiveSupport::TestCase
   end
   
   test("update") do
-    nt = FactoryGirl.create(:template)
+    nt = create(:template)
     
     pages = []
     
     3.times do
-      page = FactoryGirl.create(:page, {
-        :template => FactoryGirl.create(:template)
+      page = create(:page, {
+        :template => create(:template)
       })
       
-      domain = FactoryGirl.create(:domain, :page_id => page.id)
+      domain = create(:domain, :page_id => page.id)
       page.update_attribute(:domain_id, domain.id)
       page.reload
       pages << page
     end
     
-    FasterCSV.open(@path, "w", @opts) do |csv|
+    CSV.open(@path, "w", @opts) do |csv|
       pages.each do |page|
         csv << [page.preferred_domain.name, page.preferred_domain.name, nt.id]
       end
     end
     
-    @import = FactoryGirl.create(:bulk_import, @import_attributes)
+    @import = create(:bulk_import, @import_attributes)
     
     assert_difference('Page.count', 0) do
       assert_difference('Template.count', 0) do
@@ -112,18 +112,18 @@ class BulkImportPageTest < ActiveSupport::TestCase
     assert_equal [nt.id], pages.map(&:reload).map(&:template_id).uniq, 'c'
   end
   test("update erroneous") do
-    pages = FactoryGirl.create_list(:page, 10, {
-      :template => FactoryGirl.create(:template),
-      :domain => FactoryGirl.create(:domain)
+    pages = create_list(:page, 10, {
+      :template => create(:template),
+      :domain => create(:domain)
     })
     
-    FasterCSV.open(@path, "w", @opts) do |csv|
+    CSV.open(@path, "w", @opts) do |csv|
       pages.each do |page|
         csv << [page.preferred_domain.name, 'foo']
       end
     end
     
-    @import = FactoryGirl.create(:bulk_import, @import_attributes)
+    @import = create(:bulk_import, @import_attributes)
     
     assert_difference('Page.count', 0) do
       assert_difference('Template.count', 0) do
@@ -138,21 +138,21 @@ class BulkImportPageTest < ActiveSupport::TestCase
     assert_equal 'failure', @import.state
   end
   test("update some erroneous") do
-    nt = FactoryGirl.create(:template)
+    nt = create(:template)
     pages = []
     
     5.times do
-      page = FactoryGirl.create(:page, {
-        :template => FactoryGirl.create(:template)
+      page = create(:page, {
+        :template => create(:template)
       })
       
-      domain = FactoryGirl.create(:domain, :page_id => page.id)
+      domain = create(:domain, :page_id => page.id)
       page.update_attribute(:domain_id, domain.id)
       page.reload
       pages << page
     end
         
-    FasterCSV.open(@path, "w", @opts) do |csv|
+    CSV.open(@path, "w", @opts) do |csv|
       pages.each do |page|
         csv << [page.preferred_domain.name, page.preferred_domain.name, nt.id]
       end
@@ -160,7 +160,7 @@ class BulkImportPageTest < ActiveSupport::TestCase
       5.times {|n| csv << ["#{n}.scierwo.pl", "#{n}.scierwo.pl", 'foo']}
     end
     
-    @import = FactoryGirl.create(:bulk_import, @import_attributes)
+    @import = create(:bulk_import, @import_attributes)
     
     assert_difference('Page.count', 0) do
       assert_difference('Template.count', 0) do

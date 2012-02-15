@@ -1,9 +1,9 @@
-require 'test_helper'
+require File.expand_path('../../test_helper', __FILE__)
 
 class DocumentPublishedTest < ActiveSupport::TestCase
   def setup
-    @stub = Factory.build(:document)
-    @document = FactoryGirl.create(:document)
+    @stub = build(:document)
+    @document = create(:document)
   end
 
   test("initialize") do
@@ -26,7 +26,7 @@ class DocumentPublishedTest < ActiveSupport::TestCase
     assert @document.published_at.nil?
   end
   test("nil create") do
-    @document = FactoryGirl.create(:document, { :published_at => nil })
+    @document = create(:document, { :published_at => nil })
     @document.reload
     
     assert @document.published_at.nil?
@@ -53,7 +53,7 @@ class DocumentPublishedTest < ActiveSupport::TestCase
     assert @document.published_at > Time.now
   end
   test("not nil create") do
-    @document = FactoryGirl.create(:document, {
+    @document = create(:document, {
       :published_at => 2.hours.from_now
     })
     @document.reload
@@ -86,7 +86,7 @@ class DocumentPublishedTest < ActiveSupport::TestCase
     assert @document.published_at < Time.now
   end
   test("published true create") do
-    @document = FactoryGirl.create(:document, { :published => true })
+    @document = create(:document, { :published => true })
     @document.reload
     
     assert_not_nil @document.published_at
@@ -117,7 +117,7 @@ class DocumentPublishedTest < ActiveSupport::TestCase
     assert @document.published_at.nil?
   end
   test("published false create") do
-    @document = FactoryGirl.create(:document, { :published => false })
+    @document = create(:document, { :published => false })
     @document.reload
     
     assert @document.published_at.nil?

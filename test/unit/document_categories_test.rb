@@ -1,9 +1,9 @@
-require 'test_helper'
+require File.expand_path('../../test_helper', __FILE__)
 
 class DocumentCategoriesTest < ActiveSupport::TestCase
   def setup
-    @stub = Factory.build(:document)
-    @document = FactoryGirl.create(:document)
+    @stub = build(:document)
+    @document = create(:document)
   end
   
   test("setup") do
@@ -12,7 +12,7 @@ class DocumentCategoriesTest < ActiveSupport::TestCase
   end
   
   test("explicite primary_category") do
-    category = FactoryGirl.create(:category)
+    category = create(:category)
     
     @document.category = category
     @document.save! # TODO: required?
@@ -20,7 +20,7 @@ class DocumentCategoriesTest < ActiveSupport::TestCase
     assert_equal category, @document.primary_category
   end
   test("implicite primary_category") do
-    category = FactoryGirl.create(:category)
+    category = create(:category)
     
     @document.categories << category
     @document.save! # TODO: required?
@@ -28,13 +28,13 @@ class DocumentCategoriesTest < ActiveSupport::TestCase
     assert_equal category, @document.primary_category
   end
   test("explicite primary_category?") do
-    @document.category = FactoryGirl.create(:category)
+    @document.category = create(:category)
     @document.save! # TODO: required?
     
     assert @document.primary_category?
   end
   test("implicite primary_category?") do
-    @document.categories << FactoryGirl.create(:category)
+    @document.categories << create(:category)
     @document.save! # TODO: required?
     
     assert @document.primary_category?
@@ -44,7 +44,7 @@ class DocumentCategoriesTest < ActiveSupport::TestCase
   end
   
   test("primary_category categories") do
-    category = FactoryGirl.create(:category)
+    category = create(:category)
     
     @document.category = category
     @document.save! # TODO: required?
@@ -54,7 +54,7 @@ class DocumentCategoriesTest < ActiveSupport::TestCase
   
   test("permalinks create") do
     @document.update_attributes({
-      :category => FactoryGirl.create(:category, :permalinks => '/%id%')
+      :category => create(:category, :permalinks => '/%id%')
     })
     @document.permalink! # TODO: required?
     
@@ -62,7 +62,7 @@ class DocumentCategoriesTest < ActiveSupport::TestCase
   end
   test("permalinks update") do
     @document.update_attributes({
-      :category => FactoryGirl.create(:category)
+      :category => create(:category)
     })
     @document.category.update_attributes(:permalinks => '/%year%')
     @document.permalink! # TODO: required?

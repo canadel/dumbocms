@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require File.expand_path('../../test_helper', __FILE__)
 require 'action_web_service/test_invoke'
 
 class MtApiTest < ActionController::TestCase
@@ -7,13 +7,13 @@ class MtApiTest < ActionController::TestCase
   def setup
     @controller = BackendController.new
     
-    @account = FactoryGirl.create(:account, {
+    @account = create(:account, {
       :email => 'u',
       :password => 'p',
       :password_confirmation => 'p'
     })
-    @domain = FactoryGirl.create(:domain)
-    @page = FactoryGirl.create(:page, {
+    @domain = create(:domain)
+    @page = create(:page, {
       :account => @account,
       :domain => @domain
     })
@@ -23,7 +23,7 @@ class MtApiTest < ActionController::TestCase
   end
   
   test("getRecentPostTitles") do
-    docs = FactoryGirl.create_list(:document, 2, :page => @page)
+    docs = create_list(:document, 2, :page => @page)
     a = [@page.id, 'u', 'p', 5]
     ret = invoke_layered :mt, :getRecentPostTitles, *a
     assert ret.is_a?(Array)
@@ -44,7 +44,7 @@ class MtApiTest < ActionController::TestCase
     assert ret.empty?
   end
   test("getCategoryList") do
-    cats = FactoryGirl.create_list(:category, 2, :page => @page)
+    cats = create_list(:category, 2, :page => @page)
     a = [@page.id, 'u', 'p']
     ret = invoke_layered :mt, :getCategoryList, *a
     assert ret.is_a?(Array)
@@ -67,8 +67,8 @@ class MtApiTest < ActionController::TestCase
     assert ret.empty?
   end
   test("setPostCategories") do
-    doc = FactoryGirl.create(:document, :page => @page)
-    cats = FactoryGirl.create_list(:category, 2, :page => @page)
+    doc = create(:document, :page => @page)
+    cats = create_list(:category, 2, :page => @page)
     struct = cats.map do |cat|
       MovableTypeStructs::CategoryPerPost.new({
         :categoryName => cat.name,
@@ -82,8 +82,8 @@ class MtApiTest < ActionController::TestCase
     assert_equal cats.map(&:name), doc.reload.categories.names
   end
   test("setPostCategories duplicates") do
-    doc = FactoryGirl.create(:document, :page => @page)
-    cats = FactoryGirl.create_list(:category, 2, :page => @page)
+    doc = create(:document, :page => @page)
+    cats = create_list(:category, 2, :page => @page)
     struct = cats.map do |cat|
       MovableTypeStructs::CategoryPerPost.new({
         :categoryName => cat.name,
@@ -97,8 +97,8 @@ class MtApiTest < ActionController::TestCase
     assert_equal cats.map(&:name), doc.reload.categories.names
   end
   test("setPostCategories categoryId") do
-    doc = FactoryGirl.create(:document, :page => @page)
-    cats = FactoryGirl.create_list(:category, 2, :page => @page)
+    doc = create(:document, :page => @page)
+    cats = create_list(:category, 2, :page => @page)
     struct = cats.map do |cat|
       MovableTypeStructs::CategoryPerPost.new({
         :categoryId => cat.external_id.to_s,
@@ -111,8 +111,8 @@ class MtApiTest < ActionController::TestCase
     assert_equal cats.map(&:name).sort, doc.reload.categories.names.sort
   end
   test("setPostCategories categoryName") do
-    doc = FactoryGirl.create(:document, :page => @page)
-    cats = FactoryGirl.create_list(:category, 2, :page => @page)
+    doc = create(:document, :page => @page)
+    cats = create_list(:category, 2, :page => @page)
     struct = cats.map do |cat|
       MovableTypeStructs::CategoryPerPost.new({
         :categoryName => cat.name,
@@ -125,9 +125,9 @@ class MtApiTest < ActionController::TestCase
     assert_equal cats.map(&:name).sort, doc.reload.categories.names.sort
   end
   test("setPostCategories empty") do
-    doc = FactoryGirl.create(:document, {
+    doc = create(:document, {
       :page => @page,
-      :categories => FactoryGirl.create_list(:category, 2, :page => @page)
+      :categories => create_list(:category, 2, :page => @page)
     })
     assert doc.reload.categories.any?
     a = [doc.external_id, 'u', 'p', []]
@@ -136,8 +136,8 @@ class MtApiTest < ActionController::TestCase
     assert doc.reload.categories.empty?
   end
   test("setPostCategories categoryId primary") do
-    doc = FactoryGirl.create(:document, :page => @page)
-    cats = FactoryGirl.create_list(:category, 2, :page => @page)
+    doc = create(:document, :page => @page)
+    cats = create_list(:category, 2, :page => @page)
     struct = cats.map do |cat|
       MovableTypeStructs::CategoryPerPost.new({
         :categoryId => cat.external_id.to_s,
@@ -151,14 +151,14 @@ class MtApiTest < ActionController::TestCase
     assert_equal cats.map(&:name).sort, doc.reload.categories.names.sort
   end
   test("setPostCategories error") do
-    a = [31231317381, 'u', 'p', []]
+    a = [(2 ** 16 - rand(2 ** 8)), 'u', 'p', []]
     ret = invoke_layered :mt, :setPostCategories, *a
     assert_equal false, ret
   end
   test("getPostCategories") do
-    doc = FactoryGirl.create(:document, {
+    doc = create(:document, {
       :page => @page,
-      :categories => FactoryGirl.create_list(:category, 2, :page => @page)
+      :categories => create_list(:category, 2, :page => @page)
     })
     assert doc.reload.categories.any?
     a = [doc.external_id, 'u', 'p']
@@ -167,7 +167,7 @@ class MtApiTest < ActionController::TestCase
     assert_equal 2, ret.size
   end
   test("getPostCategories error") do
-    a = [312321317231, 'u', 'p']
+    a = [(2 ** 16 - rand(2 ** 8)), 'u', 'p']
     ret = invoke_layered :mt, :getPostCategories, *a
     assert ret.is_a?(Array)
     assert ret.empty?
@@ -193,7 +193,7 @@ class MtApiTest < ActionController::TestCase
     assert_equal expected, ret
   end
   test("publishPost") do
-    doc = FactoryGirl.create(:document, :page => @page, :published => false)
+    doc = create(:document, :page => @page, :published => false)
     assert !doc.reload.published?
     a = [doc.external_id, 'u', 'p']
     ret = invoke_layered :mt, :publishPost, *a
@@ -206,7 +206,7 @@ class MtApiTest < ActionController::TestCase
     assert_equal false, ret
   end
   test("getTrackbackPings") do
-    doc = FactoryGirl.create(:document, :page => @page)
+    doc = create(:document, :page => @page)
     a = [doc.external_id]
     ret = invoke_layered :mt, :getTrackbackPings, *a
     assert_equal([], ret)

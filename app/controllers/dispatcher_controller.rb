@@ -18,15 +18,15 @@ class DispatcherController < ApplicationController
 
       if @domain.nil?
         # Do not found if unknown domain.
-        render(:action => 'not_found_domain', :status => :not_found)
+        render(action: 'not_found_domain', status: :not_found)
         logger.info "Domain '#{request.host}' is Not Found, a HTTP 404."
         return false # FIXME
       elsif @page && @page.redirect_to.present?
         # Do redirect if the domain is redirecting.
         # TODO: Redirect to the preferred first?
         redirect_to @page.url,
-          :text => "Moved Permanently",
-          :status => :moved_permanently
+          text: "Moved Permanently",
+          status: :moved_permanently
           
         logger.info "Redirecting to #{@page.url}."
         return false # FIXME
@@ -37,8 +37,8 @@ class DispatcherController < ApplicationController
         return true # FIXME
       elsif @document.nil?
         redirect_to @page.url,
-          :text => "Moved Permanently",
-          :status => :moved_permanently
+          text: "Moved Permanently",
+          status: :moved_permanently
           
         logger.info "Redirecting to #{@page.url}."
         return false # FIXME
@@ -46,8 +46,8 @@ class DispatcherController < ApplicationController
         # Do redirect if the path is not a canonical URL.
         # Do redirect if the domain is not a preferred domain.
         redirect_to @document.url,
-          :text => "Moved Permanently",
-          :status => :moved_permanently
+          text: "Moved Permanently",
+          status: :moved_permanently
 
         logger.info "Redirecting to #{@document.url}."
         return false # FIXME
@@ -64,10 +64,10 @@ class DispatcherController < ApplicationController
         if !@page.documents.not_found? && @page.documents.any?
           if @page.development?
             # Render the informative error message, if development.
-            render(:action => 'not_found_document', :status => :not_found)
+            render(action: 'not_found_document', status: :not_found)
           else
             # Render the generic not_found, if none specified.
-            render(:text => 'Not Found', :status => :not_found)
+            render(text: 'Not Found', status: :not_found)
           end
           
           logger.info "Document '#{@document}' is Not Found, a HTTP 404."
@@ -76,17 +76,17 @@ class DispatcherController < ApplicationController
           # Render the not_found document if specified.
           @document = @page.documents.not_found
         elsif @page.documents.empty?
-          @document = @page.documents.stub(:page => @page) # FIXME ???
+          @document = @page.documents.stub(page: @page) # FIXME ???
         end
       end
 
       text, content_type = @document.render_fresh(params)
 
-      render({
-        :text => text,
-        :content_type => content_type,
-        :status => @document.status
-      })
+      render(
+        text: text,
+        content_type: content_type,
+        status: @document.status
+      )
       
       logger.info "Rendered the document '#{@document}' of page '#{@page}'."
       true

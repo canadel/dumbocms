@@ -1,8 +1,8 @@
-require 'test_helper'
+require File.expand_path('../../test_helper', __FILE__)
 
 class DocumentMarkupTest < ActiveSupport::TestCase
   def setup
-    @doc = FactoryGirl.create(:document)
+    @doc = create(:document)
   end
   
   test("default") do

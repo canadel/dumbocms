@@ -1,5 +1,4 @@
 .bundle
-Gemfile.lock
 db/*.sqlite3
 db/*.sqlite3-journal
 log/*.log
@@ -9,3 +8,11 @@ public/uploads/*
 test/tmp/*.csv
 test/tmp/*
 typescript
+.rvmrc
+REVISION
+vendor/bundle
+tmp/
+log
+public/system
+.vagrant
+.DS_Store

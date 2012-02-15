@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require File.expand_path('../../test_helper', __FILE__)
 require 'action_web_service/test_invoke'
 
 class BloggerApiTest < ActionController::TestCase
@@ -7,13 +7,13 @@ class BloggerApiTest < ActionController::TestCase
   def setup
     @controller = BackendController.new
     
-    @account = FactoryGirl.create(:account, {
+    @account = create(:account, {
       :email => 'u',
       :password => 'p',
       :password_confirmation => 'p'
     })
-    @domain = FactoryGirl.create(:domain)
-    @page = FactoryGirl.create(:page, {
+    @domain = create(:domain)
+    @page = create(:page, {
       :account => @account,
       :domain => @domain
     })
@@ -23,7 +23,7 @@ class BloggerApiTest < ActionController::TestCase
   end
   
   test("deletePost") do
-    doc = FactoryGirl.create(:document, :page => @page)
+    doc = create(:document, :page => @page)
     assert @account.reload.documents.include?(doc)
     assert_not_nil doc.external_id
     args = ['foo', doc.external_id, 'u', 'p', 1]
@@ -41,7 +41,7 @@ class BloggerApiTest < ActionController::TestCase
     ret = invoke_layered :blogger, :getUserInfo, *args
     assert_equal 'u', ret['nickname'] # FIXME
     assert_equal @page.url, ret['url'] # FIXME
-    assert_equal 'maurycy', ret['lastname'] # FIXME
+    assert_equal 'dumbo', ret['lastname'] # FIXME
     assert_equal @account.id.to_s, ret['userid']
     assert_equal '', ret['firstname'] # FIXME
     assert_equal 'u', ret['email']
@@ -84,7 +84,7 @@ class BloggerApiTest < ActionController::TestCase
     end
   end
   test("newPost categories") do
-    cats = FactoryGirl.create_list(:category, 3, :page => @page)
+    cats = create_list(:category, 3, :page => @page)
     content = "<title>hau</title><category>#{cats.join(",")}</category>miau"
     args = ['foo', @page.id, 'u', 'p', content, true]
     assert_difference('Document.count', 1) do

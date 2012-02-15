@@ -6,12 +6,12 @@ class Page < ActiveRecord::Base
   define_parent %w{account domain template}
   define_propagate :permalinks, :documents, :permalink!
   define_default %w{atom rss sitemap indexable ogp}, true
-  define_default :georss, lambda { self.rss }
-  define_default :published_at, lambda { Time.now }
+  define_default :georss, -> { self.rss }
+  define_default :published_at, -> { Time.now }
   define_value :http_server, Rails.configuration.dumbocms.http_server
   define_value :permalinks, Rails.configuration.dumbocms.permalinks
   define_value :robots_txt, Rails.configuration.dumbocms.robots_txt
-  define_external_id :on => :account
+  define_external_id on: :account
   define_name
   define_import %w{
     domain_name template_id permalinks name title description
@@ -22,22 +22,22 @@ class Page < ActiveRecord::Base
     external_id description google_analytics_tracking_code name title
     latitude longitude environment url visible_documents domains categories
     frontpage preferred_domain snippets resources
-  }, { :visible_documents => :documents }
+  }, { visible_documents: :documents }
   define_has_many %w{categories domains documents snippets},
-    :extend => Cms::Association::Array
+    extend: Cms::Association::Array
   define_has_many %w{documents_permalinks},
-    :through => :documents, :source => :permalinks
+    through: :documents, source: :permalinks
   define_timezone :timezone
-  define_default :timezone, lambda { self.account.try(:timezone) || 'Europe/Berlin' }
+  define_default :timezone, -> { self.account.try(:timezone) || 'Europe/Berlin' }
   
-  validates :template, :associated => true
-  validates :template_id, :presence => true, :numericality => { :greater_than => 0 }
+  validates :template, associated: true
+  validates :template_id, presence: true, numericality: { greater_than: 0 }
   
-  delegate :company, :to => :account
-  delegate :resources, :to => :company
-  delegate :not_found, :to => :documents, :allow_nil => true
+  delegate :company, to: :account
+  delegate :resources, to: :company
+  delegate :not_found, to: :documents, allow_nil: true
   
-  default_scope latest()
+  default_scope latest() if table_exists?
   
   def visible_documents # FIXME !!!
     documents.assigned()
@@ -65,11 +65,11 @@ class Page < ActiveRecord::Base
 
         # Domain does not exist. Create it, and create the site.
         if domain_name.present?
-          domain = Domain.create(:name => domain_name, :page => page)
+          domain = Domain.create(name: domain_name, page: page)
           return domain unless domain.valid? # FIXME
         end
 
-        page.update_attributes(:domain => domain)
+        page.update_attributes(domain: domain)
         return page
       else
         page = domain.page
@@ -102,7 +102,7 @@ class Page < ActiveRecord::Base
   
   # Return the frontpage, xor stub if none.
   def frontpage
-    documents.frontpage || Document.stub(:page => self, :slug => 'frontpage')
+    documents.frontpage || Document.stub(page: self, slug: 'frontpage')
   end
 
   #--
@@ -110,7 +110,7 @@ class Page < ActiveRecord::Base
   #++
   def as_json(options = {})
     super((options || {}).merge({
-      :only => [
+      only: [
         'account_id',
         'name',
         'title',

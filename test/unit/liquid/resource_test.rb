@@ -1,21 +1,21 @@
-require File.dirname(__FILE__) + '/../../test_helper'
+require File.expand_path('../../../test_helper', __FILE__)
 require 'time'
 
 class Liquid::ResourceTest < ActiveSupport::TestCase
   def setup
-    @page = FactoryGirl.create(:page, {
+    @page = create(:page, {
       :permalinks => '/%slug%'
     })
     
-    @resource = FactoryGirl.create(:resource, {
+    @resource = create(:resource, {
       :company => @page.account.company,
       :name => 'test-name.jpg',
       :slug => 'test-name'
     })
     
-    @document = FactoryGirl.create(:document, {
+    @document = create(:document, {
       :page => @page,
-      :template => FactoryGirl.create(:template)
+      :template => create(:template)
     })
   end
   

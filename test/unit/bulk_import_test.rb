@@ -1,12 +1,12 @@
-require 'test_helper'
+require File.expand_path('../../test_helper', __FILE__)
 
 class BulkImportTest < ActiveSupport::TestCase
   
-  test("create") { assert FactoryGirl.create(:bulk_import).valid? }
+  test("create") { assert create(:bulk_import).valid? }
   test("process!") { assert BulkImport.process! }
   
   test("blank ignored") do
-    account = FactoryGirl.create(:account)
+    account = create(:account)
     
     csv = []
     csv << ["a", "Name", "c"].join(",")
@@ -21,7 +21,7 @@ class BulkImportTest < ActiveSupport::TestCase
       :csv => File.new(path),
       :record => 'page'
     }
-    import = FactoryGirl.create(:bulk_import, import_attributes)
+    import = create(:bulk_import, import_attributes)
     
     BulkImport.process!
     

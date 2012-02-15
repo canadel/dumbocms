@@ -1,13 +1,13 @@
-require 'test_helper'
+require File.expand_path('../../test_helper', __FILE__)
 
 class RewriterTest < ActiveSupport::TestCase
   
   def setup
-    @rewriter = FactoryGirl.build(:rewriter)
+    @rewriter = build(:rewriter)
   end
   
-  test("create") { FactoryGirl.create(:rewriter) }
+  test("create") { create(:rewriter) }
   test("create position") do
-    assert FactoryGirl.create(:rewriter).position == 100
+    assert create(:rewriter).position == 100
   end
 end

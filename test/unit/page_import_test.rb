@@ -1,8 +1,8 @@
-require 'test_helper'
+require File.expand_path('../../test_helper', __FILE__)
 
 class PageImportTest < ActiveSupport::TestCase
   def setup
-    @domain = FactoryGirl.create(:domain)
+    @domain = create(:domain)
     @page = @domain.page
     @template = @page.template
   end
@@ -60,7 +60,7 @@ class PageImportTest < ActiveSupport::TestCase
   end
   
   test("update with domain") do
-    custom_domain = FactoryGirl.create(:domain, { :page => @page })
+    custom_domain = create(:domain, { :page => @page })
     attrs = {
       :domain_name => custom_domain.name,
       :template_id => @template.id
@@ -75,7 +75,7 @@ class PageImportTest < ActiveSupport::TestCase
     assert_equal(2, imported.domains.size, 'Should set all domains.')
   end
   test("update without domain") do
-    custom_template = FactoryGirl.create(:template)
+    custom_template = create(:template)
     attrs = {
       :domain_name => @domain.name,
       :template_id => custom_template.id
@@ -97,7 +97,7 @@ class PageImportTest < ActiveSupport::TestCase
       'Should change the template.')
   end
   test("do not update preferred domain") do
-    custom = FactoryGirl.create(:domain, :page => @page)
+    custom = create(:domain, :page => @page)
     assert(! custom.preferred?, 'Should not be preferred.')
     
     attrs = {

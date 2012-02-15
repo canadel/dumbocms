@@ -10,7 +10,7 @@ class RssController < ApplicationController
     @documents = @page.documents
 
     respond_to do |format|
-      format.rss { render :layout => false }
+      format.rss { render(layout: false) }
     end
   end
 end

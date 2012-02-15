@@ -1,9 +1,9 @@
-require 'test_helper'
+require File.expand_path('../../test_helper', __FILE__)
 
 class RobotsTest < ActionDispatch::IntegrationTest
 
   def setup
-    @domain = FactoryGirl.create(:domain)
+    @domain = create(:domain)
     @page = @domain.page
     
     host!(@page.preferred_domain.name)

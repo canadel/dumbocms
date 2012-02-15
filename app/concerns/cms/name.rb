@@ -6,7 +6,7 @@ module Cms
       
       def define_name(nejm=:name, options={})
         nejm = nejm.to_sym
-        options = options.symbolize_keys.merge(:presence => true)
+        options = options.symbolize_keys.merge(presence: true)
         
         define_method(:nejm) { nejm }
         define_method(:to_s) { send(nejm) }

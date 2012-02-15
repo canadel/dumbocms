@@ -7,7 +7,7 @@ class Permalink < ActiveRecord::Base
   define_matching %w{path}
   define_name :path
   
-  validates :path, :length => { :maximum => 2047 } # 2048 - 1 FIXME RFC
+  validates :path, length: { maximum: 2047 } # 2048 - 1 FIXME RFC
 
   # default_scope custom().latest().alphabetically()
   default_scope latest().alphabetically()
@@ -21,8 +21,8 @@ class Permalink < ActiveRecord::Base
     true
   end
   
-  delegate :page, :to => :document
-  delegate :preferred_domain, :to => :page
+  delegate :page, to: :document
+  delegate :preferred_domain, to: :page
   
   # Return the URL, xor nil if hidden document.
   def url

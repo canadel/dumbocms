@@ -1,15 +1,15 @@
-require 'test_helper'
+require File.expand_path('../../test_helper', __FILE__)
 
 class DomainWilcardTest < ActiveSupport::TestCase
   def setup
-    @domain = FactoryGirl.create(:domain)
+    @domain = create(:domain)
   end
 
   test('setup') do
     assert @domain.wildcard?
   end
   test('default') do
-    assert FactoryGirl.build(:domain).wildcard?
+    assert build(:domain).wildcard?
   end
   
   test('wildcard wildcard') do
@@ -33,8 +33,8 @@ class DomainWilcardTest < ActiveSupport::TestCase
   end
   
   test('exact first') do
-    d0 = FactoryGirl.create(:domain, :name => 'a.pl')
-    d1 = FactoryGirl.create(:domain, :name => 'www.a.pl', :wildcard => false)
+    d0 = create(:domain, :name => 'a.pl')
+    d1 = create(:domain, :name => 'www.a.pl', :wildcard => false)
     
     assert_equal d1, Domain.matching_wildcard('www.a.pl')
   end

@@ -1,18 +1,18 @@
-require 'test_helper'
+require File.expand_path('../../test_helper', __FILE__)
 
 class AdminTest < ActionDispatch::IntegrationTest
 
   def setup
-    @account = FactoryGirl.create(:account, {
+    @account = create(:account, {
       :role => 'owner',
       :super_user => true,
-      :email => "maurycypw@gmail.com",
+      :email => "dumbo@dumbocms.com",
       :password => 'dupa123',
       :password_confirmation => 'dupa123'
     })
     
     @auth = ActionController::HttpAuthentication::Basic
-    @enc = @auth.encode_credentials('maurycypw@gmail.com', 'dupa123')
+    @enc = @auth.encode_credentials('dumbo@dumbocms.com', 'dupa123')
   end
   
   test('authorization') do
@@ -48,17 +48,13 @@ class AdminTest < ActionDispatch::IntegrationTest
     get('/admin/categories', nil, 'HTTP_AUTHORIZATION' => @enc)
     assert_response :success
   end
-  test('resources') do
-    get('/admin/resources', nil, 'HTTP_AUTHORIZATION' => @enc)
-    assert_response :success
-  end
   
   test('create document') do
     params = { "model_name"=>"documents", "_save"=>"", "document" => {
       "slug"=>"abc123",
       "template_id"=>"",
       "title"=>"lara",
-      "page_id"=>FactoryGirl.create(:page).id,
+      "page_id"=>create(:page).id,
       "language"=>"",
       "category_id"=>"",
       "content"=>"abc123",

@@ -35,7 +35,7 @@ module Cms
         # return true if self.methods.include?(value_method(col))
         
         define_default(col, v)
-        validates col, :presence => true
+        validates col, presence: true
         
         if v.is_a?(Proc)
           define_method(value_method(col), v)

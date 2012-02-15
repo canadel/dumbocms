@@ -1,9 +1,9 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require File.expand_path('../../test_helper', __FILE__)
 
 class CategoryTest < ActiveSupport::TestCase
   def setup
-    @category = FactoryGirl.create(:category)
-    @stub = FactoryGirl.build(:category)
+    @category = create(:category)
+    @stub = build(:category)
   end
 
   test("setup") do
@@ -11,16 +11,16 @@ class CategoryTest < ActiveSupport::TestCase
   end
 
   test("to_s") { assert_equal @category.name, @category.to_s }
-  test("create") { assert FactoryGirl.create(:category).valid? }
+  test("create") { assert create(:category).valid? }
   
   test("external_id") do
-    page = FactoryGirl.create(:page)
-    categories = FactoryGirl.create_list(:category, 3, :page => page)
+    page = create(:page)
+    categories = create_list(:category, 3, :page => page)
     
     assert_equal [1, 2, 3].sort, categories.map(&:external_id).sort
   end
   test("external_id per page") do
-    categories = FactoryGirl.create_list(:category, 3)
+    categories = create_list(:category, 3)
     
     assert_equal [1, 1, 1].sort, categories.map(&:external_id).sort
   end
@@ -45,7 +45,7 @@ class CategoryTest < ActiveSupport::TestCase
     assert_equal([], to_liquid['subcategories'])
   end
   test("to_liquid parent") do
-    parent = FactoryGirl.create(:category)
+    parent = create(:category)
     
     @category.update_attributes(:parent => parent)
     
@@ -56,7 +56,7 @@ class CategoryTest < ActiveSupport::TestCase
   test("to_liquid categories") do
     names = %w{c123 b123 a123}
     categories = names.map do |name|
-      FactoryGirl.create(:category, :name => name)
+      create(:category, :name => name)
     end
     
     @category.categories = categories
@@ -68,7 +68,7 @@ class CategoryTest < ActiveSupport::TestCase
   end
   
   test("names") do
-    page = FactoryGirl.create(:page)
+    page = create(:page)
     
     names = [
       "Vitaliy Volodymyrovych Klychko",
@@ -78,7 +78,7 @@ class CategoryTest < ActiveSupport::TestCase
     categories = [] # TODO: #tap
     
     names.each do |name|
-      categories << FactoryGirl.create(:category, {
+      categories << create(:category, {
         :name => name,
         :page => page
       })
@@ -89,10 +89,10 @@ class CategoryTest < ActiveSupport::TestCase
     assert_equal names.sort, page.categories.names.sort
   end
   test("names alphabetically") do
-    page = FactoryGirl.create(:page)
+    page = create(:page)
     names = %w{c123 b123 a123}
     categories = names.map do |name|
-      FactoryGirl.create(:category, :name => name, :page => page)
+      create(:category, :name => name, :page => page)
     end
     
     page.reload # TODO: required?
@@ -101,16 +101,16 @@ class CategoryTest < ActiveSupport::TestCase
   end
   
   test("matching name") do
-    category = FactoryGirl.create(:category, :name => 'maurycy')
-    assert_equal category, Category.matching('maurycy')
+    category = create(:category, :name => 'dumbo')
+    assert_equal category, Category.matching('dumbo')
   end
   test("matching slug") do
-    category = FactoryGirl.create(:category, :slug => 'maurycy')
-    assert_equal category, Category.matching('maurycy')
+    category = create(:category, :slug => 'dumbo')
+    assert_equal category, Category.matching('dumbo')
   end
   test("matching id") do
-    page = FactoryGirl.create(:page)
-    category = FactoryGirl.create(:category, :page => page)
+    page = create(:page)
+    category = create(:category, :page => page)
     assert_equal category, page.categories.matching(category.external_id)
   end
   test("matching nil") do
@@ -118,18 +118,18 @@ class CategoryTest < ActiveSupport::TestCase
   end
   
   test("primary?") do
-    document = FactoryGirl.create(:document)
+    document = create(:document)
     document.update_attributes({ :category => @category })
     
     assert   @category.primary?(document)
   end
   test("not primary?") do
-    document = FactoryGirl.create(:document)
+    document = create(:document)
 
     assert ! @category.primary?(document)
   end
   test('json') do
-    category = FactoryGirl.create(:category)
+    category = create(:category)
     columns = %w{name page_id slug}
     
     assert_equal columns.sort, JSON.parse(category.to_json).keys.sort

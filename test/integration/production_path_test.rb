@@ -1,4 +1,4 @@
-require 'test_helper'
+require File.expand_path('../../test_helper', __FILE__)
 
 class ProductionPathTest < ActionDispatch::IntegrationTest
 
@@ -9,23 +9,23 @@ class ProductionPathTest < ActionDispatch::IntegrationTest
     Rails.configuration.dumbocms.production = true
 
     # Set up a liberal template.
-    @template = FactoryGirl.create(:template, {
+    @template = create(:template, {
       :content => '{{ document.content }}'
     })
     
     # Set up a page with a single domain, and few documents.
-    @single_page = FactoryGirl.create(:page, {
+    @single_page = create(:page, {
       :template => @template
     })
-    @single_domain = FactoryGirl.create(:domain, :page => @single_page)
-    @single_page.documents = FactoryGirl.create_list(:document, 3, {
+    @single_domain = create(:domain, :page => @single_page)
+    @single_page.documents = create_list(:document, 3, {
       :page => @single_page,
-      :content => ActiveSupport::SecureRandom.hex(16)
+      :content => SecureRandom.hex(16)
     })
-    @single_frontpage = FactoryGirl.create(:document, {
+    @single_frontpage = create(:document, {
       :page => @single_page.reload,
       :slug => 'frontpage',
-      :content => ActiveSupport::SecureRandom.hex(16)
+      :content => SecureRandom.hex(16)
     })
     
     # TODO required?
@@ -33,21 +33,21 @@ class ProductionPathTest < ActionDispatch::IntegrationTest
     @single_page.save
     
     # Set up a page with many domains, and few documents.
-    @many_page = FactoryGirl.create(:page, {
+    @many_page = create(:page, {
       :template => @template
     })
-    @many_domain = FactoryGirl.create(:domain, :page => @many_page)
-    @many_page.domains = FactoryGirl.create_list(:domain, 3, {
+    @many_domain = create(:domain, :page => @many_page)
+    @many_page.domains = create_list(:domain, 3, {
       :page => @many_page
     })
-    @many_page.documents = FactoryGirl.create_list(:document, 3, {
+    @many_page.documents = create_list(:document, 3, {
       :page => @many_page,
-      :content => ActiveSupport::SecureRandom.hex(16)
+      :content => SecureRandom.hex(16)
     })
-    @many_frontpage = FactoryGirl.create(:document, {
+    @many_frontpage = create(:document, {
       :page => @many_page.reload,
       :slug => 'frontpage',
-      :content => ActiveSupport::SecureRandom.hex(16)
+      :content => SecureRandom.hex(16)
     })
 
     # TODO required?

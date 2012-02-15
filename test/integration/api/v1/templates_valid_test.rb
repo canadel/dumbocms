@@ -1,10 +1,10 @@
-require File.dirname(__FILE__) + '/../../../test_helper'
+require File.expand_path('../../../../test_helper', __FILE__)
 
 class Api::V1::TemplatesValidTest < ActionDispatch::IntegrationTest
 
   def setup
-    @account = FactoryGirl.create(:account)
-    @template = FactoryGirl.create(:template, {
+    @account = create(:account)
+    @template = create(:template, {
       :account => @account
     })
   end

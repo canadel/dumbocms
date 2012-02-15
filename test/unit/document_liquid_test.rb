@@ -1,9 +1,9 @@
-require 'test_helper'
+require File.expand_path('../../test_helper', __FILE__)
 
 class DocumentLiquidTest < ActiveSupport::TestCase
   def setup
-    @stub = Factory.build(:document)
-    @document = FactoryGirl.create(:document)
+    @stub = build(:document)
+    @document = create(:document)
   end
   
   test("assigns") do

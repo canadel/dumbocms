@@ -32,7 +32,7 @@ module Cms
           
           st.each do |s|
             aasm_event(s) do
-              transitions :to => s, :from => prev
+              transitions to: s, from: prev
             end
           end
           

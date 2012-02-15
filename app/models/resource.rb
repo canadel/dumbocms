@@ -5,7 +5,7 @@ class Resource < ActiveRecord::Base
   define_liquid_attributes %w{name slug url}
   define_matching %w{slug name}
   define_name :name
-  define_slug :scope => :company, :from => :name
+  define_slug scope: :company, from: :name
   
   mount_uploader :resource, ResourceUploader
 

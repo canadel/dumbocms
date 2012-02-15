@@ -6,13 +6,13 @@ class Domain < ActiveRecord::Base
   define_parent :page
   define_liquid_attributes %w{name}
   define_matching %w{name}
-  define_name :name, :uniqueness => true
+  define_name :name, uniqueness: true
   define_import %w{page_id name wildcard}
   define_strips %w{name}
   define_default :wildcard, true
 
-  validates :page, :associated => true
-  validates :page_id, :numericality => { :greater_than => 0 }
+  validates :page, associated: true
+  validates :page_id, numericality: { greater_than: 0 }
   
   default_scope alphabetically()
   
@@ -27,11 +27,7 @@ class Domain < ActiveRecord::Base
     
     # Return the stub domain.
     def stub(page, name)
-      Domain.new({
-        :page => page,
-        :page_id => page.id,
-        :name => name
-      })
+      Domain.new(page: page, page_id: page.id, name: name)
     end
     
     def matching_wildcard(q)
@@ -74,7 +70,7 @@ class Domain < ActiveRecord::Base
   #++
   def as_json(options = {})
     super((options || {}).merge({
-      :only => [
+      only: [
         'name',
         'wildcard',
         'page_id'

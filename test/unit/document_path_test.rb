@@ -1,17 +1,17 @@
-require 'test_helper'
+require File.expand_path('../../test_helper', __FILE__)
 
 class DocumentPathTest < ActiveSupport::TestCase
   def setup; true; end
   
   test("nil") do
-    doc = FactoryGirl.create(:document, :path => nil)
+    doc = create(:document, :path => nil)
     doc.reload
     
     assert_equal 1, doc.permalinks.size
     assert_equal 0, doc.permalinks.custom.size
   end
   test("create") do
-    doc = FactoryGirl.create(:document, :path => '/security')
+    doc = create(:document, :path => '/security')
     doc.reload
     
     assert_equal(1, doc.permalinks.size)
@@ -19,7 +19,7 @@ class DocumentPathTest < ActiveSupport::TestCase
     assert_equal('/security', doc.path)
   end
   test("update") do
-    doc = FactoryGirl.create(:document)
+    doc = create(:document)
     doc.update_attributes(:path => '/foo')
     doc.reload
     
@@ -28,7 +28,7 @@ class DocumentPathTest < ActiveSupport::TestCase
     assert_equal('/foo', doc.path)
   end
   test("update url") do
-    doc = FactoryGirl.create(:document)
+    doc = create(:document)
     doc.update_attributes(:path => 'http://onet.pl/foo')
     doc.reload
     
@@ -37,7 +37,7 @@ class DocumentPathTest < ActiveSupport::TestCase
     assert_equal('/foo', doc.path)
   end
   test("update url relative") do
-    doc = FactoryGirl.create(:document)
+    doc = create(:document)
     doc.update_attributes(:path => 'foo')
     doc.reload
     

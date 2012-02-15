@@ -1,12 +1,12 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require File.expand_path('../../test_helper', __FILE__)
 
 class DomainTest < ActiveSupport::TestCase
   def setup
-    @domain = FactoryGirl.create(:domain)
+    @domain = create(:domain)
     @page = @domain.page
   end
   
-  test("should create") { FactoryGirl.create(:domain) }
+  test("should create") { create(:domain) }
 
   # Ensure it matches correct domains.
   test("should match") { assert @domain == Domain.matching(@domain.name) }
@@ -18,7 +18,7 @@ class DomainTest < ActiveSupport::TestCase
   end
   
   test('json') do
-    dm = FactoryGirl.create(:domain)
+    dm = create(:domain)
     columns = %w{page_id wildcard name}
     assert_equal(columns.sort, JSON.parse(dm.to_json).keys.sort)
   end

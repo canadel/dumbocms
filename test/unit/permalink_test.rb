@@ -1,15 +1,15 @@
-require 'test_helper'
+require File.expand_path('../../test_helper', __FILE__)
 
 class PermalinkTest < ActiveSupport::TestCase
   def setup
-    @permalink = FactoryGirl.build(:permalink)
+    @permalink = build(:permalink)
   end
 
-  test("should create") { FactoryGirl.create(:permalink) }
+  test("should create") { create(:permalink) }
   
   # Ensure that correct patches do match.
   test "should return matching" do
-    link = FactoryGirl.create(:permalink, :path => '/foo')
+    link = create(:permalink, :path => '/foo')
     assert_equal link, Permalink.matching('/foo')
   end
   

@@ -2,7 +2,7 @@ class AddSettingsEmailFrom < ActiveRecord::Migration
   def self.up
     Setting.create!(
       :key    => 'service.email_form.default_from',
-      :value  => 'maurycy@gds.pl'
+      :value  => 'dumbocms@dumbocms.com'
     )
     Setting.create!(
       :key    => 'service.email_form.default_subject',

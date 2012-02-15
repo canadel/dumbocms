@@ -1,9 +1,9 @@
-require 'test_helper'
+require File.expand_path('../../test_helper', __FILE__)
 
 class PageUrlTest < ActiveSupport::TestCase
   def setup
-    @domain = FactoryGirl.build(:domain) # FIXME: switch to #stub ?
-    @page = FactoryGirl.create(:page) # FIXME #build possible?
+    @domain = build(:domain) # FIXME: switch to #stub ?
+    @page = create(:page) # FIXME #build possible?
   end
   
   # test("setup")

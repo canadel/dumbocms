@@ -4,8 +4,8 @@ module Cms
   
     module ClassMethods
       
-      # define_slug :scope => :page
-      # define_slug :scope => :page, :from => :title
+      # define_slug scope: :page
+      # define_slug scope: :page, from: :title
       def define_slug(options={})
         options = options.symbolize_keys
         options.assert_valid_keys(:from, :scope)
@@ -14,14 +14,14 @@ module Cms
         
         if options.has_key?(:from)
           from = options[:from].to_sym
-          has_permalink from, :slug, :scope => skope, :unique => true
+          has_permalink from, :slug, scope: skope, unique: true
         end
-        
+
         validates :slug,
-          :presence => true,
-          :uniqueness => { :scope => skope },
-          :length => { :minimum => 3, :maximum => 255 },
-          :format => Cms::Format::SLUG
+          presence: true,
+          uniqueness: { scope: skope },
+          length: { minimum: 3, maximum: 255 },
+          format: Cms::Format::SLUG
 
         true
       end
