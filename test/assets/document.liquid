@@ -1,0 +1,16 @@
+{{ document.content }}
+{{ document.slug }}
+{{ document.url }}
+{{ document.title | link_to: document.url }}
+{{ document.latitude }}
+{{ document.longitude }}
+{{ document.kind }}
+{{ document.language }}
+{{ document.description }}
+{{ document.description | truncatewords: 1 }}
+{{ document.title }}
+{{ document.published_at | date: '%j' }}
+{{ document.category.name }}
+{% for cat in document.categories %}
+{{ cat.name }}
+{% endfor %}

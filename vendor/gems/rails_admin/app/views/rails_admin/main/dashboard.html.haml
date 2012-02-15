@@ -1,0 +1,40 @@
+- head_style "rails_admin/list"
+- head_style "rails_admin/dashboard"
+- head_style "rails_admin/ra.timeline.css"
+- head_javascript "rails_admin/application.js"
+- head_javascript "rails_admin/ra.timeline.js"
+
+#block-tables.block
+  = breadcrumbs_for :dashboard, nil
+
+  .content
+    %h2.title= @page_name
+    .inner
+      = render(:partial => 'layouts/rails_admin/flash', :locals => {:flash => flash})
+      %table.table.grid
+        %thead
+          %tr
+            %th.start
+              = t "admin.dashboard.model_name"
+            %th= t "admin.dashboard.last_used"
+            %th= t "admin.dashboard.records"
+            %th=# t "admin.dashboard.modify"
+        %tbody
+          - @abstract_models.each do |abstract_model|
+            - if authorized? :list, abstract_model
+              - list_path = rails_admin_list_path(:model_name => abstract_model.to_param)
+              - row_class = "#{cycle("odd", "even")}#{" link" if list_path}"
+
+              %tr{:class => row_class, :"data-link" => list_path}
+                %td.start
+                  %span.show= link_to RailsAdmin.config(abstract_model).label, list_path
+                %td
+                  - if (last_used = @most_recent_changes[abstract_model.pretty_name])
+                    = time_ago_in_words last_used
+                    = t "admin.dashboard.ago"
+                %td.count
+                  %span.number= @count[abstract_model.pretty_name]
+                %td.last
+                  - if authorized? :new, abstract_model
+                    - new_path = rails_admin_new_path(:model_name => abstract_model.to_param)
+                    = action_icon(new_path, :add, t("admin.dashboard.add_new"))

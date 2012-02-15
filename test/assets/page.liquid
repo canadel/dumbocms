@@ -1,0 +1,30 @@
+<h1>{{ page.name }}</h1>
+<h2>{{ page.title }}</h2>
+<p>{{ page.description }}</p>
+<span class="latitude">{{ page.latitude }}</span>
+<span class="longitude">{{ page.longitude }}</span>
+<span class="environment">{{ page.environment }}</span>
+{{ page.name | link_to: page.url }}
+{{ page.frontpage.title | link_to: page.frontpage.url }}
+<span class="preferred_domain">{{ page.preferred_domain.name }}</span>
+
+<h3>Documents, latest first.</p>
+<ul id="documents">
+{% for doc in page.documents %}
+<li>{{ doc.title | link_to: doc.url }}</li>
+{% endfor %}
+</ul>
+
+<h3>Categories, first by position, then alphabetically</h3>
+<ul id="categories">
+{% for category in page.categories %}
+<li>{{ category.name }}</li>
+{% endfor %}
+</ul>
+
+<h3>Resources, latest first.</h3>
+<ul id="resources">
+{% for resource in page.resources %}
+<li>{{ resource.name | link_to: resource.url }}</li>
+{% endfor %}
+</ul>

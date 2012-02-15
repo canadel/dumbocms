@@ -1,0 +1,12 @@
+{% assign category = document.category %}
+{{ category.name }}
+{{ category.position }}
+{{ category.slug }}
+{{ category.parent.name }}
+{% for cat in category.subcategories %}
+{{ cat.name }}
+{% endfor %}
+{% for doc in category.documents %}
+{{ doc.title | link_to: doc.url }}
+{{ doc.published_at }}
+{% endfor %}

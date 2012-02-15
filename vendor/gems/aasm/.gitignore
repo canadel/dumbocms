@@ -1,0 +1,10 @@
+*.sw?
+*~
+.DS_Store
+.idea
+coverage
+pkg
+rdoc
+Gemfile.lock
+spec/debug.log
+spec/*.db

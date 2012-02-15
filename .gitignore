@@ -1,0 +1,11 @@
+.bundle
+Gemfile.lock
+db/*.sqlite3
+db/*.sqlite3-journal
+log/*.log
+tmp/**/*
+public/system/*
+public/uploads/*
+test/tmp/*.csv
+test/tmp/*
+typescript

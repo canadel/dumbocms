@@ -1,0 +1,1 @@
+# Liquid::Template.register_tag('head', HeadTag)
