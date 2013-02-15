@@ -3,8 +3,8 @@ development:
   encoding: utf8
   collation: utf8_general_ci
   host: 127.0.0.1
-  username: dumbodev
-  password: dumbodevlovesentropybits
+  username: root
+  password: root
   database: dumbocms_development
   reconnect: true
 

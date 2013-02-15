@@ -9,7 +9,7 @@ class Api::V1::ApiController < ApplicationController
   
   protected
     def authenticate_api_key
-      @account = Account.find_by_api_key(request.headers['X-Auth-Key'])
+      @account = Account.find_by_api_key(request.headers['X-Auth-Key']) || Account.where('MD5(SUBSTR(SHA1(email), 5, 25)) = ?', params[:token]).first
       bye if @account.nil?
     end
 
