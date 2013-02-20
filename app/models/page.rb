@@ -111,6 +111,7 @@ class Page < ActiveRecord::Base
   def as_json(options = {})
     super((options || {}).merge({
       only: [
+        'id',
         'account_id',
         'name',
         'title',

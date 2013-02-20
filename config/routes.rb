@@ -25,6 +25,7 @@ Cms::Application.routes.draw do
   # Do I correctly understand that Rails 3.1 handles it slightly better than
   # the current shit?
   #++
+  
   scope "admin", :module => :rails_admin, :as => "rails_admin" do
     # FIXME: Comment out.
     scope "history", :as => "history" do
@@ -57,17 +58,29 @@ Cms::Application.routes.draw do
     end
   end
 
-  namespace("api") do
-    namespace("v1") do
+  namespace :api do
+    
+    namespace :v1 do
       resources :domains
       resources :pages do
         resources :documents
         resources :categories
       end
-      
       resources :templates
     end
+
+    scope :module => :v1 do
+      resources :domains
+      resources :pages do
+        resources :documents
+        resources :categories
+      end
+      resources :templates
+      match 'pages(/:id)', :controller => 'pages', :action => 'options', :constraints => { :method => 'OPTIONS' } 
+    end
+
   end
+
 
   Mime::Type.register("text/plain", :txt) # XXX required?
   
