@@ -71,6 +71,7 @@ class Domain < ActiveRecord::Base
   def as_json(options = {})
     super((options || {}).merge({
       only: [
+        'id',
         'name',
         'wildcard',
         'page_id'

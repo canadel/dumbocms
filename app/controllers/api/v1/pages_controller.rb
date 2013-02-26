@@ -15,29 +15,49 @@ class Api::V1::PagesController < Api::V1::ApiController
   end
 
   def create
-    #page = Page.new
-    #page.title = params[:title] if params[:title]
-    #page.description = params[:descriptipn] if params[:description]
-    #page.save
-    render :text => 'hello, baby'
+    if params[:page][:_with_domain].nil?
+      page = Page.create(params[:page])
+    else
+      domain = Domain.where(:name => params[:page][:name]).first
+
+      unless domain
+        params[:page].delete('_with_domain')
+        
+        page = Page.create(params[:page])
+
+        domain = Domain.create({
+          name: params[:page][:name],
+          page_id: page.id,
+          wildcard: 1
+        })
+        
+        page.domain_id = domain.id
+        
+        page.save
+      end
+    end
+
+    render :json => page
   end
 
   def update
     page = Page.where(:id => params[:id], :account_id => @account.id).first
   
     if page
-      page.title = params[:page][:title] if params[:page][:title]
-      page.description = params[:page][:description] if params[:page][:description]
-
-      if page.save
-        render :text => 'Success', :status => '200'
-      else
-        render :text => 'Fail', :status => 500
-      end
-
-    else
-      render :text => 'Error', :status => 404
+      # page.title = params[:page][:title] if params[:page][:title]
+      # page.description = params[:page][:description] if params[:page][:description]
+      # page.domain_id = params[:page][:domain_id] if params[:page][:domain_id]
+      # page.save
+      page.update_attributes(params[:page])
     end
+
+    render :json => page
+  end
+
+private
+
+  def allowed_params
+    %w(account_id name title template_id description indexable)
   end
 
 end
