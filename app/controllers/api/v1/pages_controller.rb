@@ -34,6 +34,8 @@ class Api::V1::PagesController < Api::V1::ApiController
         page.domain_id = domain.id
         
         page.save
+      else
+        page = domain.page || Page.where(:domain_id => domain.id).first
       end
     end
 
