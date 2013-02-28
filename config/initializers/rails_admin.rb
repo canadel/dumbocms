@@ -17,7 +17,8 @@ RailsAdmin.config do |config|
     BulkImport,
     Category,
     Plan,
-    Company
+    Company,
+    Template
   ]
 
   config.model(Company) do
@@ -332,7 +333,9 @@ RailsAdmin.config do |config|
             label "GeoRSS?"
             show
           end
-          
+
+
+
           field(:latitude) { show }
           field(:longitude) { show }
         end
@@ -388,6 +391,26 @@ RailsAdmin.config do |config|
       field(:account) { show }
       field(:record) { show }
       field(:csv) { show }
+    end
+  end
+
+  config.model(Template) do
+    object_label_method { :admin_object_label }
+    
+    list do
+      field(:id) { show }
+      field(:name) { show }
+      field(:thumbnail) { show }
+      field(:published) { show }
+    end
+    
+    [:show, :edit, :create, :update].each do |view|
+      send(view) do
+        field(:id) { show }
+        field(:name) { show }
+        field(:thumbnail) { show }
+        field(:published) { show }
+      end
     end
   end
 end

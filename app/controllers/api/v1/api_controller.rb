@@ -1,5 +1,4 @@
-class Api::V1::ApiController < ApplicationController
-  inherit_resources
+class Api::V1::ApiController < InheritedResources::Base
   actions :index, :show, :create, :update, :destroy
  
   respond_to :json 

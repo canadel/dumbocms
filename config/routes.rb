@@ -75,8 +75,12 @@ Cms::Application.routes.draw do
         resources :documents
         resources :categories
       end
-      resources :templates
-      match 'pages(/:id)', :controller => 'pages', :action => 'options', :constraints => { :method => 'OPTIONS' } 
+      resources :templates do
+        collection do
+          match 'choose'
+        end
+      end
+      match ':resource(/:id)', :controller => 'api', :action => 'options', :constraints => { :method => 'OPTIONS' } 
     end
 
   end

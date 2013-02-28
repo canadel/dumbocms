@@ -40,7 +40,8 @@ class Template < ActiveRecord::Base
       only: [
         'name',
         'account_id',
-        'content'
+        'content',
+        'thumbnail'
       ]
     }))
   end
