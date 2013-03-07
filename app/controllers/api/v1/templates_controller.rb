@@ -7,7 +7,9 @@ class Api::V1::TemplatesController < Api::V1::ApiController
 
 
   def index
-    render :json => Template.where(:published => true), :callback => params[:callback]
+    domain = Domain.where(:name => params[:domain]).first if params[:domain]
+    Template.current = domain.page.template if domain
+    render :json => Template.where(:published => true).to_json(:methods => :current), :callback => params[:callback]
   end
 
   def choose

@@ -12,6 +12,8 @@ class Template < ActiveRecord::Base
 
   has_paper_trail ignore: :synced_at
 
+  @@current = nil
+
   default_scope latest()
 
   before_destroy do
@@ -32,6 +34,14 @@ class Template < ActiveRecord::Base
     File.expand_path(name, account.templates_path)
   end
   
+  def self.current=(template)
+    @@current = template
+  end
+
+  def current
+    @@current == self
+  end
+
   #--
   # FIXME: Bind with Liquid or import somehow.
   #++
