@@ -238,6 +238,7 @@ class Document < ActiveRecord::Base # :nodoc:
   def as_json(options = {})
     super((options || {}).merge({
       only: [
+        'id',
         'title',
         'content',
         'page_id',
