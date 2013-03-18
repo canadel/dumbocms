@@ -7,7 +7,7 @@ class Api::V1::PagesController < Api::V1::ApiController
   })
 
   def index
-    render :json => @account.pages.to_json(:include => :template), :callback => params[:callback]
+    render :json => @account.pages.to_json(:include => { :template => { :except => [] }, :documents => { :methods => :tpl } } ), :callback => params[:callback]
   end
 
   def show

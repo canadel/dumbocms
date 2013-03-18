@@ -161,6 +161,10 @@ class Document < ActiveRecord::Base # :nodoc:
     new_record? ? page.try(:url).to_s : canonical_permalink.try(:url).to_s
   end
   
+  def tpl
+    self.template
+  end
+
   # http://codex.wordpress.org/Using_Permalinks.
   def permalink! # FIXME :autosave or so
     return true if permalinks.reload.custom.any?
