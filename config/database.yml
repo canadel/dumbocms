@@ -4,7 +4,7 @@ development:
   collation: utf8_general_ci
   host: 127.0.0.1
   username: root
-  password: root
+  password: ""
   database: dumbocms_development
   reconnect: true
 

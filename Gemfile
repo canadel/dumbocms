@@ -7,7 +7,7 @@ source 'https://rubygems.org'
 
 gem 'sqlite3-ruby', '1.2.5', require: 'sqlite3'
 
-gem 'rails', '3.0.12'
+gem 'rails', '3.0.20'
 gem 'rake', '0.9.2'
 gem 'mysql2', '< 0.3'
 

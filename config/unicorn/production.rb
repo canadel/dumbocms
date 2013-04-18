@@ -11,7 +11,7 @@ worker_processes (rails_env == 'production' ? 8 : 2)
 preload_app true
 
 # Restart any workers that haven't responded in 30 seconds
-timeout 30
+timeout 300
 
 # PID file location
 pid "#{root_path}/tmp/pids/unicorn.pid"
