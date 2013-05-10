@@ -18,7 +18,9 @@ RailsAdmin.config do |config|
     Category,
     Plan,
     Company,
-    Template
+    Template,
+    Package,
+    Preset
   ]
 
   config.model(Company) do
@@ -413,4 +415,39 @@ RailsAdmin.config do |config|
       end
     end
   end
+
+  config.model(Package) do
+    list do
+      field(:id) { show }
+      field(:name) { show }
+      field(:template) { show }
+    end
+    
+    [:show, :edit, :create, :update].each do |view|
+      send(view) do
+        field(:name) { show }
+        field(:template) { show }
+        field(:presets) { show }
+      end
+    end      
+  end
+
+ config.model(Preset) do
+    list do
+      field(:id) { show }
+      field(:slug) { show }
+      field(:title) { show }
+      field(:template) { show }
+    end
+    
+    [:show, :edit, :create, :update].each do |view|
+      send(view) do
+        field(:slug) { show }
+        field(:title) { show }
+        field(:content) { show }
+        field(:template) { show }
+      end
+    end      
+  end
+
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130227154444) do
+ActiveRecord::Schema.define(:version => 20130508060707) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
@@ -119,6 +119,18 @@ ActiveRecord::Schema.define(:version => 20130227154444) do
   add_index "domains", ["name"], :name => "index_domains_on_domain_name"
   add_index "domains", ["page_id"], :name => "index_domains_on_page_id"
 
+  create_table "packages", :force => true do |t|
+    t.string   "name"
+    t.integer  "template_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "packages_presets", :id => false, :force => true do |t|
+    t.integer "package_id"
+    t.integer "preset_id"
+  end
+
   create_table "pages", :force => true do |t|
     t.integer  "account_id"
     t.datetime "created_at"
@@ -178,6 +190,15 @@ ActiveRecord::Schema.define(:version => 20130227154444) do
     t.integer  "billing_day_of_month"
     t.integer  "billing_price"
     t.integer  "documents_limit"
+  end
+
+  create_table "presets", :force => true do |t|
+    t.string   "slug"
+    t.string   "title"
+    t.text     "content"
+    t.integer  "template_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "rails_admin_histories", :force => true do |t|

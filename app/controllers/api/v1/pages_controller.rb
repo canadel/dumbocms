@@ -37,48 +37,13 @@ class Api::V1::PagesController < Api::V1::ApiController
       end
     elsif !params[:page][:_package].nil?
 
-        packages = {}
-
-        packages['auc'] = {
-          'template_id' => 48,
-          'documents' => [
-            {
-              'template_id' => 45,
-              'slug' => 'internet',
-              'title' => 'Internet'
-            },
-            {
-              'template_id' => 45,
-              'slug' => 'overview',
-              'title' => 'Overview'
-            },
-            {
-              'template_id' => 45,
-              'slug' => 'solar',
-              'title' => 'Solar'
-            }
-          ]
-        }
-
-        packages['shift'] = {
-          'template_id' => 95,
-          'documents' => [
-            {
-              'template_id' => 94,
-              'slug' => 'contant',
-              'title' => 'Contact & Impressum'
-            }
-          ]
-        }
-
-        Rails.logger.warn packages.inspect
-
-
-        package = params[:page][:_package]
+        package_name = params[:page][:_package]
         params[:page].delete('_package')
 
-        unless packages[package].nil?
-          params[:page][:template_id] = packages[package]['template_id']
+        package = Package.where(:name => package_name).first
+
+        if package
+          params[:page][:template_id] = package.template.id
 
           page = Page.create(params[:page])
           
@@ -92,8 +57,8 @@ class Api::V1::PagesController < Api::V1::ApiController
           
           page.save
 
-          packages[package]['documents'].each do |d|
-            doc = Document.create(:page_id => page.id, :title => d['title'], :slug => d['slug'], :content => 'Created with EasyCreate')
+          package.presets.each do |p|
+            doc = Document.create(:page_id => page.id, :title => p.title, :slug => p.slug, :content => p.content)
           end
         end
     else
