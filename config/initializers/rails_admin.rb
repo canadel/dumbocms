@@ -1,3 +1,5 @@
+Rails.logger.warn '=== Init rails admin'
+
 RailsAdmin.config do |config|
   # The authentication is handled by HTTP Basic Auth.
   config.authenticate_with { authorized? || access_denied }
