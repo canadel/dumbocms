@@ -12,7 +12,6 @@ typescript
 REVISION
 vendor/bundle
 tmp/
-log
 public/system
 .vagrant
 .DS_Store

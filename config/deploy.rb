@@ -1,7 +1,7 @@
 require "bundler/capistrano"
 
 set :application, "dumbocms"
-set :domain,      "uppereast.dumbocms.com:9922"
+set :domain,      "37.235.63.140"
 
 set :user,        "#{application}"
 
@@ -22,6 +22,7 @@ ssh_options[:forward_agent] = true
 set :rails_env,   :production
 
 set :whenever_command, "bundle exec whenever"
+
 #require "whenever/capistrano"
 
 # namespace :bundle do
@@ -34,5 +35,6 @@ set :whenever_command, "bundle exec whenever"
 #after "unicorn:reload", "whenever:update_crontab"
 #after "unicorn:reload", "bundle:install"
 
-set :unicorn_bin, "/usr/local/bin/unicorn_rails"
-require 'capistrano-unicorn'
+#set :unicorn_bin, "/usr/local/bin/unicorn_rails"
+
+#require 'capistrano-unicorn'
