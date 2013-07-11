@@ -423,11 +423,19 @@ RailsAdmin.config do |config|
       field(:id) { show }
       field(:name) { show }
       field(:template) { show }
+      field(:label) { show }
+      field(:position) { show }
+      field(:published) { show }
     end
     
     [:show, :edit, :create, :update].each do |view|
       send(view) do
         field(:name) { show }
+        field(:label) { show }
+        field(:description) { show }
+        field(:position) { show }
+        field(:thumbnail) { show }
+        field(:published) { show }
         field(:template) { show }
         field(:presets) { show }
       end

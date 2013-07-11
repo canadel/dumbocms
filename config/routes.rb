@@ -62,6 +62,7 @@ Cms::Application.routes.draw do
     
     namespace :v1 do
       resources :domains
+      resources :packages
       resources :pages do
         resources :documents
         resources :categories
@@ -75,6 +76,7 @@ Cms::Application.routes.draw do
 
     scope :module => :v1 do
       resources :domains
+      resources :packages
       resources :pages do
         resources :documents
         resources :categories
