@@ -420,7 +420,6 @@ RailsAdmin.config do |config|
 
   config.model(Package) do
     list do
-      field(:id) { show }
       field(:name) { show }
       field(:template) { show }
       field(:label) { show }
