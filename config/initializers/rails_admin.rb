@@ -414,6 +414,7 @@ RailsAdmin.config do |config|
         field(:name) { show }
         field(:thumbnail) { show }
         field(:published) { show }
+        field(:content) { show }
       end
     end
   end
