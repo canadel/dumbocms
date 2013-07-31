@@ -168,7 +168,10 @@ RailsAdmin.config do |config|
     object_label_method { :admin_object_label }
     
     list do
-      field(:page) { show }
+      field(:page) do
+        searchable 
+        show
+      end
       field(:slug) { show }
       field(:template) { show } # FIXME limit to the current page
       field(:published_at) { show }
