@@ -70,7 +70,7 @@ class Document < ActiveRecord::Base # :nodoc:
       self.content_html = BlueCloth::new(self.content).to_html
     end
 
-    self.content_html.gsub!(/\[gmap\]([0-9]+)x([0-9]+)\[\/gmap\]/, "<div id='gmap' data-latitude='#{self.latitude}' data-longitude='#{self.longitude}' style='width: \\1px; height: \\2px'></div>") if self.latitude && self.longitude
+    self.content_html.gsub!(/\[gmap\]([0-9]+)x([0-9]+)x([0-9]+)\[\/gmap\]/, "<div id='gmap' data-latitude='#{self.latitude}' data-longitude='#{self.longitude}' data-zoom='\\3' style='width: \\1px; height: \\2px'></div>") if self.latitude && self.longitude
 
   end
   
