@@ -28,7 +28,8 @@ class Api::V1::PagesController < Api::V1::ApiController
           page_id: page.id,
           wildcard: 1
         })
-        
+       
+	page.account_id = @accound.id 
         page.domain_id = domain.id
         
         page.save
@@ -53,6 +54,7 @@ class Api::V1::PagesController < Api::V1::ApiController
             wildcard: 1
           })
           
+	  page.account_id = @account.id
           page.domain_id = domain.id
           
           page.save
@@ -62,6 +64,7 @@ class Api::V1::PagesController < Api::V1::ApiController
           end
         end
     else
+      params[:page][:account_id] = @account.id
       page = Page.create(params[:page])
     end
 

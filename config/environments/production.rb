@@ -6,6 +6,6 @@ Cms::Application.configure do
   config.serve_static_assets = false
   config.i18n.fallbacks = true
   config.active_support.deprecation = :notify
-  config.log_level = :warn
+  # config.log_level = :warn
   # config.logger = Logglier.new("http://logs.loggly.com/inputs/fdd5f313-69f8-439f-bdcd-9da76c4c3faa")
 end
