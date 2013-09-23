@@ -60,7 +60,7 @@ class Api::V1::PagesController < Api::V1::ApiController
           page.save
 
           package.presets.each do |p|
-            doc = Document.create(:page_id => page.id, :title => p.title, :slug => p.slug, :content => p.content)
+            doc = Document.create(:page_id => page.id, :title => p.title, :slug => p.slug, :content => p.content, :template_id => p.template_id, :category_id => p.category_id, :latitude => p.latitude, :longitude => p.longitude)
           end
         end
     else
