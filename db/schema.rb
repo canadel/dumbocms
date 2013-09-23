@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130711082432) do
+ActiveRecord::Schema.define(:version => 20130923123914) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
@@ -34,6 +34,13 @@ ActiveRecord::Schema.define(:version => 20130711082432) do
 
   create_table "apps", :force => true do |t|
     t.string   "type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "assets", :force => true do |t|
+    t.string   "slug"
+    t.integer  "page_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -68,6 +75,14 @@ ActiveRecord::Schema.define(:version => 20130711082432) do
   create_table "categories_documents", :id => false, :force => true do |t|
     t.integer "category_id"
     t.integer "document_id"
+  end
+
+  create_table "clients", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "slug"
+    t.string   "email"
   end
 
   create_table "companies", :force => true do |t|
@@ -204,6 +219,9 @@ ActiveRecord::Schema.define(:version => 20130711082432) do
     t.integer  "template_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "category_id"
+    t.decimal  "latitude",    :precision => 10, :scale => 0
+    t.decimal  "longitude",   :precision => 10, :scale => 0
   end
 
   create_table "rails_admin_histories", :force => true do |t|
@@ -244,6 +262,14 @@ ActiveRecord::Schema.define(:version => 20130711082432) do
     t.integer  "page_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "subpages", :force => true do |t|
+    t.string   "page_id"
+    t.string   "path"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "documents"
   end
 
   create_table "templates", :force => true do |t|

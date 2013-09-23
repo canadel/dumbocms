@@ -1,5 +1,6 @@
 class Preset < ActiveRecord::Base
   belongs_to :template
+  belongs_to :category
   has_and_belongs_to_many :packages
 
   validates :slug, :title, presence: true

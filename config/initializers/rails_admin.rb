@@ -458,7 +458,10 @@ RailsAdmin.config do |config|
         field(:slug) { show }
         field(:title) { show }
         field(:content) { show }
+        field(:latitude) { show }
+        field(:longitude) { show }
         field(:template) { show }
+        field(:category) { show }
       end
     end      
   end
