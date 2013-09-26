@@ -168,6 +168,10 @@ class Document < ActiveRecord::Base # :nodoc:
     self.template
   end
 
+  def links
+    self.permalinks
+  end
+
   # http://codex.wordpress.org/Using_Permalinks.
   def permalink! # FIXME :autosave or so
     return true if permalinks.reload.custom.any?
