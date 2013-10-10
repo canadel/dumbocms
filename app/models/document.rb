@@ -75,7 +75,7 @@ class Document < ActiveRecord::Base # :nodoc:
   end
   
   before_save do
-    self.update_content_html if content_changed?
+    self.update_content_html
     true
   end
   
