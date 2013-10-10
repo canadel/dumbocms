@@ -13,13 +13,9 @@ class Api::V1::DocumentsController < Api::V1::ApiController
 
   def update
     document = Document.where(:id => params[:id]).first
-    if @page.account_id == @account.id
-      document.content = params[:document][:content]
-      document.title = params[:document][:title]
-    end
-    document.markup = 'markdown'
-    document.content_html = BlueCloth::new(document.content).to_html
-    document.save
+    params[:document][:content_html] = BlueCloth::new(params[:document][:content]).to_html
+    params[:document][:markup] = 'markdown'
+    document.update_attributes(params[:document]) if @page.account_id == @account.id
     render :json => document, :callback => params[:callback]
   end
 
