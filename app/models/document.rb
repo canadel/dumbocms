@@ -260,7 +260,9 @@ class Document < ActiveRecord::Base # :nodoc:
         'description',
         'kind',
         'markup',
-        'timezone'
+        'timezone',
+        'latitude',
+        'longitude'
       ]
     }))
   end  
