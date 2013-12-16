@@ -16,7 +16,7 @@ class DispatcherController < ApplicationController
     logger.info "Render #{filename}"
 
     if File.exist?(filename)
-      render :file => filename, :content_type => 'image/x-icon'
+      render :text => open(filename, "rb").read, :content_type => 'image/x-icon'
     else
       render :status => 404, :text => 'Not found'
     end
