@@ -12,7 +12,18 @@ class DispatcherController < ApplicationController
   end
 
   def favicon
-    render :text => 'favicon'
+    filename = "#{config.root}/public/favicons/#{@domain}.ico"
+    logger.info "Render #{filename}"
+
+    if File.exist?(filename)
+      extname = File.extname(filename)[1..-1]
+      mime_type = Mime::Type.lookup_by_extension(extname)
+      content_type = mime_type.to_s unless mime_type.nil?
+      render :file => filename, :content_type => content_type
+    else
+      render :status => 404, :text => 'Not found'
+    end
+
   end
 
   protected
