@@ -118,6 +118,7 @@ Cms::Application.routes.draw do
     match '/index.atom', :to => 'atom#index', :as => :atom
     match '/sitemap.xml', :to => 'sitemap#index', :as => :sitemap
     match '/robots.txt', :to => 'robots#index', :as => :robots
+    match '/favicon.ico', :to => 'dispatcher#favicon', :as => :favicon
     match '/preview(/:page(/:document))', :to => 'preview#show'
   end
   

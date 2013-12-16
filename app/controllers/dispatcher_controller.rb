@@ -10,7 +10,11 @@ class DispatcherController < ApplicationController
     logger.info "Handled the incoming web request."
     true
   end
-  
+
+  def favicon
+    render :text => 'favicon'
+  end
+
   protected
     # {Redirect}[http://www.google.com/support/webmasters/bin/answer.py?answer=93633]?
     def do_redirect
