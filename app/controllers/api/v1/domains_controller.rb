@@ -11,4 +11,8 @@ class Api::V1::DomainsController < Api::V1::ApiController
     render :json => domain
   end
 
+  def index
+    render :json => Domain.all
+  end
+
 end
