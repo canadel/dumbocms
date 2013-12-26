@@ -426,9 +426,9 @@ RailsAdmin.config do |config|
     list do
       field(:name) { show }
       field(:template) { show }
-      field(:label) { show }
       field(:position) { show }
       field(:published) { show }
+      field(:mobile) { show }
     end
     
     [:show, :edit, :create, :update].each do |view|
@@ -441,6 +441,8 @@ RailsAdmin.config do |config|
         field(:published) { show }
         field(:template) { show }
         field(:presets) { show }
+        field(:mobile) { show }
+        field(:mobile_package) { show }
       end
     end      
   end
