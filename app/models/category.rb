@@ -40,6 +40,7 @@ class Category < ActiveRecord::Base
   def as_json(options = {})
     super((options || {}).merge({
       only: [
+        'id',
         'name',
         'slug',
         'page_id'

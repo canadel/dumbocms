@@ -172,6 +172,10 @@ class Document < ActiveRecord::Base # :nodoc:
     self.permalinks
   end
 
+  def cats
+    self.page.categories
+  end
+
   # http://codex.wordpress.org/Using_Permalinks.
   def permalink! # FIXME :autosave or so
     return true if permalinks.reload.custom.any?
@@ -257,6 +261,7 @@ class Document < ActiveRecord::Base # :nodoc:
         'language',
         'published_at',
         'template_id',
+        'category_id',
         'description',
         'kind',
         'markup',

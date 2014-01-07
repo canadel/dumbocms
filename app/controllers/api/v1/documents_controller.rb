@@ -15,12 +15,18 @@ class Api::V1::DocumentsController < Api::V1::ApiController
     document = Document.where(:id => params[:id]).first
     params[:document][:content_html] = BlueCloth::new(params[:document][:content]).to_html
     params[:document][:markup] = 'markdown'
+    params[:document][:category_id] = params[:document][:category]
+    params[:document].delete(:category)
     document.update_attributes(params[:document]) if @page.account_id == @account.id
     render :json => document, :callback => params[:callback]
   end
 
   def show
-    render :json => Document.find(params[:id]), :callback => params[:callback]
+
+    doc = Document.find(params[:id])
+    cats = Category.where(:page_id => doc.page_id)
+
+    render :json => { :document => doc, :cats => cats }, :callback => params[:callback]
   end
 
   def create
