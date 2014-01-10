@@ -5,6 +5,7 @@ log/*.log
 tmp/**/*
 public/system/*
 public/uploads/*
+public/favicons/*
 test/tmp/*.csv
 test/tmp/*
 typescript
