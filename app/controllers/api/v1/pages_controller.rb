@@ -29,7 +29,7 @@ class Api::V1::PagesController < Api::V1::ApiController
           wildcard: 1
         })
        
-	page.account_id = @accound.id 
+	      page.account_id = @accound.id
         page.domain_id = domain.id
         
         page.save
@@ -54,13 +54,19 @@ class Api::V1::PagesController < Api::V1::ApiController
             wildcard: 1
           })
           
-	  page.account_id = @account.id
+	        page.account_id = @account.id
           page.domain_id = domain.id
           
           page.save
 
           package.presets.each do |p|
-            doc = Document.create(:page_id => page.id, :title => p.title, :slug => p.slug, :content => p.content, :template_id => p.template_id, :category_id => p.category_id, :latitude => p.latitude, :longitude => p.longitude)
+
+            if p.category_id
+              category_template = Category.find(p.category_id)
+              new_category = Category.create(:page_id => page.id, :name => category_template.name, :slug => category_template.slug)
+            end
+
+            doc = Document.create(:page_id => page.id, :title => p.title, :slug => p.slug, :content => p.content, :template_id => p.template_id, :category_id => new_category.id, :latitude => p.latitude, :longitude => p.longitude)
           end
         end
     else
