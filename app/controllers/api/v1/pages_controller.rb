@@ -64,9 +64,12 @@ class Api::V1::PagesController < Api::V1::ApiController
             if p.category_id
               category_template = Category.find(p.category_id)
               new_category = Category.create(:page_id => page.id, :name => category_template.name, :slug => category_template.slug)
+              category_id = new_category.id
+            else
+              category_id = nil
             end
 
-            doc = Document.create(:page_id => page.id, :title => p.title, :slug => p.slug, :content => p.content, :template_id => p.template_id, :category_id => new_category.id, :latitude => p.latitude, :longitude => p.longitude)
+            doc = Document.create(:page_id => page.id, :title => p.title, :slug => p.slug, :content => p.content, :template_id => p.template_id, :category_id => category_id, :latitude => p.latitude, :longitude => p.longitude)
           end
         end
     else
